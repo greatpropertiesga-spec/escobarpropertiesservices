@@ -3,321 +3,538 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Home — Professional Property Services — Escobar Property Services | Metro Atlanta</title>
+<title>Escobar Property Services | Metro Atlanta Property Services</title>
 <meta name="description" content="Escobar Property Services offers pressure washing, soft washing, gutter cleaning, painting, and home remodeling in metro Atlanta. Get a free estimate today!">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="theme.css">
+<style>
+/* ══════════════════════════════════════════════
+   PROPERTIES180-STYLE LAYOUT — EPS COLORS
+   ══════════════════════════════════════════════ */
+:root {
+  --brand:   #0d2137;
+  --brand-2: #1a3a5c;
+  --orange:  #e86c1f;
+  --orange-d:#c85a10;
+}
+
+/* TOPBAR */
+.p180-topbar { background: var(--brand); font-family: 'Barlow', Arial, sans-serif; }
+.p180-topbar-inner { max-width:1140px; margin:0 auto; padding:0 20px; display:flex; align-items:stretch; }
+.p180-topbar-inner a { color:rgba(255,255,255,.8); font-size:12px; font-weight:500; padding:8px 16px; text-decoration:none; border-right:1px solid rgba(255,255,255,.12); display:flex; align-items:center; white-space:nowrap; transition:background .14s; }
+.p180-topbar-inner a:first-child { border-left:1px solid rgba(255,255,255,.12); }
+.p180-topbar-inner a:hover { background:rgba(255,255,255,.1); color:#fff; }
+.p180-topbar-phone { margin-left:auto; background:rgba(0,0,0,.2)!important; color:#fff!important; font-weight:700!important; font-size:13px!important; border-left:1px solid rgba(255,255,255,.12)!important; }
+
+/* HEADER */
+.p180-header { background:#fff; border-bottom:3px solid var(--orange); box-shadow:0 2px 8px rgba(0,0,0,.08); position:sticky; top:0; z-index:100; }
+.p180-header-inner { max-width:1140px; margin:0 auto; padding:0 20px; display:flex; align-items:stretch; min-height:68px; }
+.p180-logo { display:flex; align-items:center; text-decoration:none; padding-right:28px; flex-shrink:0; border-right:1px solid #eee; gap:12px; }
+.p180-logo-icon { width:44px; height:44px; background:var(--brand); border-radius:4px; display:flex; align-items:center; justify-content:center; font-family:'Barlow Condensed',sans-serif; font-weight:900; color:var(--orange); font-size:16px; letter-spacing:.5px; flex-shrink:0; }
+.p180-logo-text {}
+.p180-logo-name { font-family:'Barlow Condensed',sans-serif; font-size:20px; font-weight:800; color:var(--brand); line-height:1.1; display:block; text-transform:uppercase; letter-spacing:.3px; }
+.p180-logo-tag { font-size:9px; text-transform:uppercase; letter-spacing:2px; color:var(--orange); font-weight:700; display:block; margin-top:2px; }
+.p180-nav { display:flex; align-items:stretch; flex:1; }
+.p180-nav a { display:flex; align-items:center; font-family:'Barlow',sans-serif; font-size:12.5px; font-weight:700; text-transform:uppercase; letter-spacing:.5px; color:#555; padding:0 13px; text-decoration:none; border-bottom:3px solid transparent; transition:all .14s; white-space:nowrap; }
+.p180-nav a:hover, .p180-nav a.active { color:var(--brand); border-bottom-color:var(--orange); }
+.p180-nav-cta { background:var(--orange)!important; color:#fff!important; margin-left:10px; border-bottom:none!important; border-radius:4px!important; padding:0 20px!important; font-size:13px!important; }
+.p180-nav-cta:hover { background:var(--orange-d)!important; color:#fff!important; }
+
+/* HERO */
+.p180-hero { position:relative; overflow:hidden; min-height:480px; background:var(--brand); display:flex; align-items:center; }
+.p180-hero-bg { position:absolute; inset:0; background-size:cover; background-position:center; opacity:.2; }
+.p180-hero-inner { position:relative; z-index:1; max-width:1140px; margin:0 auto; padding:52px 20px; display:grid; grid-template-columns:1fr 380px; gap:40px; align-items:center; width:100%; }
+
+/* VIDEO */
+.p180-video { background:#000; border-radius:4px; overflow:hidden; aspect-ratio:16/9; box-shadow:0 8px 40px rgba(0,0,0,.6); position:relative; }
+.p180-video iframe, .p180-video video { width:100%; height:100%; border:none; display:block; }
+.p180-video-ph { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; background:linear-gradient(160deg,#060f1a 0%,#0d2137 100%); cursor:pointer; padding:28px; text-align:center; }
+.p180-play { width:72px; height:72px; background:rgba(255,255,255,.1); border:3px solid rgba(255,255,255,.45); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:28px; color:#fff; margin-bottom:18px; transition:all .2s; }
+.p180-video-ph:hover .p180-play { background:var(--orange); border-color:var(--orange); }
+.p180-video-ph h3 { font-family:'Barlow Condensed',sans-serif; font-size:20px; font-weight:800; color:#fff; margin-bottom:10px; text-transform:uppercase; letter-spacing:.3px; }
+.p180-video-ph p { font-family:'Barlow',sans-serif; font-size:13px; color:rgba(255,255,255,.7); line-height:1.6; }
+.p180-video-ph .p180-orange-bar { width:40px; height:4px; background:var(--orange); border-radius:2px; margin:0 auto 16px; }
+
+/* FORM */
+.p180-form-box { background:#fff; border-radius:4px; padding:28px 24px; box-shadow:0 8px 40px rgba(0,0,0,.3); }
+.p180-form-title { font-family:'Barlow Condensed',sans-serif; font-size:20px; font-weight:800; color:var(--brand); text-align:center; line-height:1.3; margin-bottom:18px; text-transform:uppercase; letter-spacing:.3px; }
+.p180-field { margin-bottom:11px; }
+.p180-field input, .p180-field select, .p180-field textarea { width:100%; border:1.5px solid #ddd; border-radius:3px; padding:10px 12px; font-size:13px; font-family:'Barlow',sans-serif; color:#333; background:#fff; transition:border-color .14s; }
+.p180-field input:focus, .p180-field select:focus { outline:none; border-color:var(--orange); }
+.p180-field input::placeholder { color:#bbb; }
+.p180-btn-submit { width:100%; background:var(--orange); color:#fff; border:none; border-radius:3px; padding:13px; font-family:'Barlow Condensed',sans-serif; font-size:16px; font-weight:800; text-transform:uppercase; letter-spacing:.8px; cursor:pointer; transition:background .14s; margin-top:4px; display:flex; align-items:center; justify-content:center; gap:8px; }
+.p180-btn-submit:hover { background:var(--orange-d); }
+.p180-privacy { font-family:'Barlow',sans-serif; font-size:11px; color:#aaa; text-align:center; margin-top:10px; display:flex; align-items:center; justify-content:center; gap:5px; }
+.eps-form-msg { display:none; margin-top:10px; padding:9px 12px; border-radius:3px; font-size:13px; font-family:'Barlow',sans-serif; }
+.eps-form-msg.success { display:block; background:#e8f5e9; color:#2e7d32; border:1px solid #c8e6c9; }
+.eps-form-msg.error   { display:block; background:#ffebee; color:#c62828; border:1px solid #ffcdd2; }
+
+/* FEATURED SERVICE */
+.p180-featured { background:#fff; border:1px solid #ddd; border-radius:3px; display:grid; grid-template-columns:340px 1fr; gap:0; overflow:hidden; margin-bottom:36px; box-shadow:0 2px 12px rgba(0,0,0,.08); }
+.p180-featured-img { height:100%; min-height:240px; background:#eee; overflow:hidden; }
+.p180-featured-img img { width:100%; height:100%; object-fit:cover; display:block; }
+.p180-featured-body { padding:28px 32px; }
+.p180-featured-label { font-family:'Barlow Condensed',sans-serif; font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:2.5px; color:var(--orange); margin-bottom:10px; display:block; }
+.p180-featured-body h3 { font-family:'Barlow Condensed',sans-serif; font-size:26px; font-weight:900; color:var(--brand); margin-bottom:12px; line-height:1.2; text-transform:uppercase; }
+.p180-featured-body p { font-family:'Barlow',sans-serif; font-size:14.5px; color:#555; line-height:1.75; margin-bottom:18px; }
+.p180-featured-meta { display:flex; gap:20px; margin-bottom:20px; flex-wrap:wrap; }
+.p180-featured-meta span { font-family:'Barlow',sans-serif; font-size:13px; color:#555; }
+.p180-featured-meta strong { color:var(--brand); }
+
+/* BUYER SECTION (services info) */
+.p180-buyer-grid { display:grid; grid-template-columns:1fr 360px; gap:52px; align-items:start; }
+.p180-buyer-body h2 { font-family:'Barlow Condensed',sans-serif; font-size:26px; font-weight:900; color:var(--brand); margin-bottom:14px; text-transform:uppercase; letter-spacing:.3px; }
+.p180-buyer-body p { font-family:'Barlow',sans-serif; font-size:15px; color:#444; line-height:1.78; margin-bottom:14px; }
+.p180-buyer-body strong { color:#222; }
+
+/* VIP / QUOTE FORM */
+.p180-vip-form { background:#f8f9fb; border:1px solid #ddd; border-top:4px solid var(--orange); border-radius:3px; padding:26px 22px; }
+.p180-vip-form h3 { font-family:'Barlow Condensed',sans-serif; font-size:20px; font-weight:900; color:var(--brand); margin-bottom:4px; text-transform:uppercase; }
+.p180-vip-form p { font-family:'Barlow',sans-serif; font-size:13px; color:#888; margin-bottom:16px; }
+.p180-row { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+
+/* SERVICES GRID */
+.p180-prop-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:20px; margin-bottom:24px; }
+.p180-prop-card { border:1px solid #ddd; border-top:4px solid var(--orange); border-radius:3px; overflow:hidden; background:#fff; transition:box-shadow .15s; cursor:pointer; }
+.p180-prop-card:hover { box-shadow:0 6px 24px rgba(0,0,0,.12); transform:translateY(-2px); }
+.p180-prop-card-img { height:150px; overflow:hidden; position:relative; background:#eee; }
+.p180-prop-card-img img { width:100%; height:100%; object-fit:cover; display:block; transition:transform .4s; }
+.p180-prop-card:hover .p180-prop-card-img img { transform:scale(1.05); }
+.p180-prop-card-icon { height:150px; display:flex; align-items:center; justify-content:center; font-size:52px; background:linear-gradient(135deg,#f0f4f8,#e8ecf0); }
+.p180-prop-card-status { position:absolute; top:0; left:0; right:0; background:rgba(13,33,55,.82); color:#fff; font-family:'Barlow Condensed',sans-serif; font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:1.5px; padding:6px 10px; text-align:center; }
+.p180-prop-card-body { padding:14px 16px; }
+.p180-prop-card-body h4 { font-family:'Barlow Condensed',sans-serif; font-size:16px; font-weight:800; color:var(--brand); margin-bottom:5px; line-height:1.2; text-transform:uppercase; }
+.p180-prop-card-city { font-family:'Barlow',sans-serif; font-size:12px; color:#888; margin-bottom:8px; }
+.p180-prop-card-details { font-family:'Barlow',sans-serif; font-size:12px; color:#666; }
+
+/* WORK WITH US */
+.p180-work-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:20px; margin-top:24px; }
+.p180-work-box { border:1px solid #ddd; border-top:4px solid var(--brand); padding:22px 18px; border-radius:3px; background:#fff; transition:all .15s; text-decoration:none; display:block; }
+.p180-work-box:hover { box-shadow:0 6px 20px rgba(0,0,0,.1); transform:translateY(-2px); border-top-color:var(--orange); }
+.p180-work-box-icon { font-size:36px; margin-bottom:12px; display:block; }
+.p180-work-box h4 { font-family:'Barlow Condensed',sans-serif; font-size:17px; font-weight:800; color:var(--brand); margin-bottom:8px; text-transform:uppercase; }
+.p180-work-box p { font-family:'Barlow',sans-serif; font-size:13px; color:#555; line-height:1.65; }
+
+/* TESTIMONIALS */
+.p180-testi-list { display:flex; flex-direction:column; gap:16px; }
+.p180-testi { background:#f8f9fb; border-left:5px solid var(--orange); padding:20px 24px; border-radius:0 3px 3px 0; }
+.p180-testi blockquote { font-family:'Barlow',sans-serif; font-size:14.5px; color:#444; line-height:1.78; font-style:italic; margin:0 0 12px; }
+.p180-testi cite { font-family:'Barlow Condensed',sans-serif; font-size:14px; font-weight:800; color:var(--brand); font-style:normal; text-transform:uppercase; letter-spacing:.3px; }
+
+/* SECTION HEADERS */
+.p180-section-head { font-family:'Barlow Condensed',sans-serif; font-size:28px; font-weight:900; color:var(--brand); margin-bottom:6px; padding-bottom:12px; border-bottom:3px solid var(--orange); text-transform:uppercase; letter-spacing:.3px; }
+.p180-section-sub { font-family:'Barlow',sans-serif; font-size:14.5px; color:#666; margin-bottom:24px; line-height:1.7; }
+
+/* FOOTER */
+.p180-footer { background:var(--brand); color:rgba(255,255,255,.75); padding:52px 0 0; border-top:4px solid var(--orange); }
+.p180-footer-grid { max-width:1140px; margin:0 auto; padding:0 20px 40px; display:grid; grid-template-columns:2fr 1fr 1fr 1fr; gap:36px; }
+.p180-footer h4 { font-family:'Barlow Condensed',sans-serif; font-size:12px; font-weight:800; text-transform:uppercase; letter-spacing:2px; color:var(--orange); margin-bottom:16px; }
+.p180-footer-name { font-family:'Barlow Condensed',sans-serif; font-size:20px; font-weight:900; color:#fff; text-transform:uppercase; letter-spacing:.3px; display:block; margin-bottom:10px; }
+.p180-footer p, .p180-footer li a { font-family:'Barlow',sans-serif; font-size:13.5px; color:rgba(255,255,255,.6); line-height:1.75; }
+.p180-footer ul { list-style:none; }
+.p180-footer li { margin-bottom:7px; }
+.p180-footer li a { text-decoration:none; transition:color .14s; }
+.p180-footer li a:hover { color:#fff; }
+.p180-footer-contact { display:flex; flex-direction:column; gap:10px; }
+.p180-footer-contact a { font-family:'Barlow',sans-serif; font-size:13.5px; color:rgba(255,255,255,.6); text-decoration:none; transition:color .14s; }
+.p180-footer-contact a:hover { color:#fff; }
+.p180-footer-bar { border-top:1px solid rgba(255,255,255,.1); max-width:1140px; margin:0 auto; padding:16px 20px; display:flex; justify-content:space-between; font-family:'Barlow',sans-serif; font-size:12px; color:rgba(255,255,255,.35); flex-wrap:wrap; gap:8px; }
+
+/* SECTION WRAPPER */
+.p180-section { padding:56px 0; }
+.p180-section-alt { background:#f5f7fa; }
+.p180-wrap { max-width:1140px; margin:0 auto; padding:0 20px; }
+
+@media(max-width:960px){
+  .p180-hero-inner { grid-template-columns:1fr; }
+  .p180-video { display:none; }
+  .p180-featured { grid-template-columns:1fr; }
+  .p180-buyer-grid { grid-template-columns:1fr; }
+  .p180-work-grid { grid-template-columns:1fr 1fr; }
+  .p180-prop-grid { grid-template-columns:1fr 1fr; }
+  .p180-footer-grid { grid-template-columns:1fr 1fr; }
+  .p180-nav { display:none; }
+}
+@media(max-width:600px){
+  .p180-prop-grid { grid-template-columns:1fr; }
+  .p180-work-grid { grid-template-columns:1fr; }
+  .p180-footer-grid { grid-template-columns:1fr; }
+  .p180-row { grid-template-columns:1fr; }
+}
+</style>
 </head>
 <body>
-<div class="eps-topbar">
-  <div class="eps-wrap"><div class="eps-topbar-inner">
-    <div class="eps-topbar-links">
+
+<!-- TOPBAR -->
+<div class="p180-topbar">
+  <div class="p180-topbar-inner">
+    <a href="services.html">Services</a>
+    <a href="gallery.html">Gallery</a>
+    <a href="about.html">About Us</a>
+    <a href="faqs.html">FAQs</a>
+    <a href="contact.html">Contact Us</a>
+    <a href="tel:6784882716" class="p180-topbar-phone eps-phone">📞 678-488-2716</a>
+  </div>
+</div>
+
+<!-- HEADER -->
+<header class="p180-header">
+  <div class="p180-header-inner">
+    <a href="index.html" class="p180-logo">
+      <div class="p180-logo-icon">EPS</div>
+      <div class="p180-logo-text">
+        <span class="p180-logo-name">Escobar Property Services</span>
+        <span class="p180-logo-tag">Licensed &amp; Insured · Metro Atlanta</span>
+      </div>
+    </a>
+    <nav class="p180-nav">
+      <a href="index.html" class="active">Home</a>
       <a href="services.html">Services</a>
       <a href="gallery.html">Gallery</a>
       <a href="about.html">About Us</a>
       <a href="faqs.html">FAQs</a>
-      <a href="contact.html">Contact</a>
-    </div>
-    <div class="eps-topbar-right">
-      <a href="mailto:info@escobarps.com" class="eps-topbar-email eps-email">info@escobarps.com</a>
-      <a href="tel:6784882716" class="eps-topbar-phone eps-phone">678-488-2716</a>
-    </div>
-  </div></div>
-</div>
-<header class="eps-header">
-  <div class="eps-wrap"><div class="eps-header-inner">
-    <a href="index.html" class="eps-logo">
-      <div class="eps-logo-icon"><span class="eps-logo-icon-text">EPS</span></div>
-      <div class="eps-logo-text">
-        <span class="eps-logo-name">Escobar Property Services</span>
-        <span class="eps-logo-tag">Licensed & Insured · Metro Atlanta</span>
-      </div>
-    </a>
-    <nav class="eps-nav">
-      <a href="index.html" class="active">Home</a>
-      <a href="services.html">Services</a>
-      <a href="gallery.html">Gallery</a>
-      <a href="about.html">About</a>
-      <a href="faqs.html">FAQs</a>
-      <a href="contact.html" class="eps-nav-cta">Free Estimate</a>
+      <a href="contact.html">Contact Us</a>
+      <a href="contact.html" class="p180-nav-cta">Free Estimate</a>
     </nav>
-  </div></div>
+  </div>
 </header>
 
-<!-- HERO -->
-<section class="eps-hero">
-  <div class="eps-hero-bg" style="background-image:url('https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1600&q=80')"></div>
-  <div class="eps-hero-overlay"></div>
-  <!-- Video container (filled by theme.js if hero_video_url is set) -->
-  <div id="eps-hero-video" style="display:none;position:absolute;inset:0;overflow:hidden;z-index:0"></div>
-  <div class="eps-wrap" style="width:100%">
-    <div class="eps-hero-inner">
-      <div class="eps-hero-content">
-        <div class="eps-hero-badge">🏆 Metro Atlanta's #1 Rated</div>
-        <h1 class="eps-hero-title">Metro Atlanta's Trusted<br><em>Property Services</em></h1>
-        <p class="eps-hero-sub">From pressure washing to full home remodeling — we keep your property looking its best. Family owned, licensed, insured, and serving Atlanta since 2018.</p>
-        <div class="eps-hero-actions">
-          <a href="contact.html" class="eps-btn eps-btn-orange eps-hero-cta">Get Free Estimate →</a>
-          <a href="tel:6784882716" class="eps-btn eps-btn-outline">📞 678-488-2716</a>
-        </div>
-      </div>
-      <div class="eps-form-card">
-        <div class="eps-form-card-title">Get a Free Quote</div>
-        <div class="eps-form-card-sub">No obligation. We respond within 24 hours.</div>
-        <form class="eps-form" data-source="hero-home">
-          <div class="eps-field"><input name="name" type="text" placeholder="Your Full Name *" required></div>
-          <div class="eps-field"><input name="phone" type="tel" placeholder="Phone Number *" required></div>
-          <div class="eps-field"><input name="email" type="email" placeholder="Email Address"></div>
-          <div class="eps-field">
-            <select name="service">
-              <option value="">Select a Service…</option>
-              <option>Pressure Washing</option>
-              <option>Soft Washing</option>
-              <option>Gutter Cleaning</option>
-              <option>Gutter Installation & Guards</option>
-              <option>House Washing</option>
-              <option>Window Cleaning</option>
-              <option>Exterior / Interior Painting</option>
-              <option>Home Remodeling</option>
-              <option>Multiple Services</option>
-            </select>
-          </div>
-          <div class="eps-field"><input name="address" type="text" placeholder="Property Address"></div>
-          <button type="submit" class="eps-btn eps-btn-orange eps-btn-block">Request Free Estimate →</button>
-          <div class="eps-form-msg"></div>
-        </form>
-        <p class="eps-privacy">🔒 Your information is 100% confidential</p>
+<!-- HERO: video left + form right -->
+<section class="p180-hero">
+  <div class="p180-hero-bg" id="eps-hero-bg"></div>
+  <div class="p180-hero-inner">
+
+    <div class="p180-video" id="hero-video-wrap">
+      <div class="p180-video-ph" id="video-placeholder">
+        <div class="p180-orange-bar"></div>
+        <div class="p180-play">▶</div>
+        <h3>Metro Atlanta's Property Services Experts</h3>
+        <p>From pressure washing to full home remodeling — family owned, licensed &amp; insured since 2018. Watch to learn how we can help.</p>
       </div>
     </div>
+
+    <div class="p180-form-box">
+      <div class="p180-form-title">Get Your Free Estimate!</div>
+      <form class="eps-form" data-source="hero-home">
+        <div class="p180-field"><input name="name" type="text" placeholder="Name:" required></div>
+        <div class="p180-field"><input name="email" type="email" placeholder="E-mail Address:"></div>
+        <div class="p180-field"><input name="phone" type="tel" placeholder="Mobile Phone:" required></div>
+        <div class="p180-field">
+          <select name="service">
+            <option value="">Select a Service…</option>
+            <option>Pressure Washing</option>
+            <option>Soft Washing</option>
+            <option>Gutter Cleaning</option>
+            <option>Gutter Installation & Guards</option>
+            <option>House Washing</option>
+            <option>Window Cleaning</option>
+            <option>Exterior / Interior Painting</option>
+            <option>Home Remodeling</option>
+            <option>Multiple Services</option>
+          </select>
+        </div>
+        <div class="p180-field"><input name="address" type="text" placeholder="Property Address:"></div>
+        <button type="submit" class="p180-btn-submit">Submit ✏️</button>
+        <div class="eps-form-msg"></div>
+      </form>
+      <p class="p180-privacy">🔒 We respect your privacy</p>
+    </div>
+
   </div>
 </section>
 
-<!-- STATS -->
-<div class="eps-stats-band">
-  <div class="eps-wrap">
-    <div class="eps-stats-grid">
-      <div class="eps-stat"><div class="eps-stat-num">500+</div><div class="eps-stat-label">Jobs Completed</div></div>
-      <div class="eps-stat"><div class="eps-stat-num">5★</div><div class="eps-stat-label">Google Rating</div></div>
-      <div class="eps-stat"><div class="eps-stat-num">6+</div><div class="eps-stat-label">Years Experience</div></div>
-      <div class="eps-stat"><div class="eps-stat-num">100%</div><div class="eps-stat-label">Satisfaction Guaranteed</div></div>
+<!-- FEATURED SERVICE / RECENT WORK -->
+<div class="p180-section">
+  <div class="p180-wrap">
+    <h2 class="p180-section-head">Featured Work</h2>
+    <div class="p180-featured" id="featured-single">
+      <div style="grid-column:1/-1;text-align:center;padding:40px;color:#999;font-family:'Barlow',sans-serif">Loading…</div>
     </div>
   </div>
 </div>
 
-<!-- SERVICES -->
-<section class="eps-section eps-section-gray">
-  <div class="eps-wrap">
-    <div class="eps-heading eps-heading-center eps-animate">
-      <span class="eps-eyebrow">What We Do</span>
-      <div class="eps-line"></div>
-      <h2>Our Services</h2>
-      <p>We offer a complete range of property services to keep your home or business looking great year-round.</p>
-    </div>
-    <div class="eps-services-grid">
-      <a href="services.html#pressure-washing" class="eps-service-card eps-animate">
-        <span class="eps-service-icon">🔫</span>
-        <h3>Pressure Washing</h3>
-        <p>High-pressure cleaning for driveways, patios, walkways, decks, and parking lots. Remove years of dirt, grime, and stains.</p>
-        <div class="eps-service-price">→ Learn More</div>
-      </a>
-      <a href="services.html#soft-washing" class="eps-service-card eps-animate">
-        <span class="eps-service-icon">🚿</span>
-        <h3>Soft Washing</h3>
-        <p>Low-pressure roof and siding cleaning that safely removes algae, mold, and mildew without damaging delicate surfaces.</p>
-        <div class="eps-service-price">→ Learn More</div>
-      </a>
-      <a href="services.html#gutter-cleaning" class="eps-service-card eps-animate">
-        <span class="eps-service-icon">🍂</span>
-        <h3>Gutter Cleaning</h3>
-        <p>Full gutter cleaning service including debris removal, downspout flushing, and minor repairs to keep water flowing properly.</p>
-        <div class="eps-service-price">→ Learn More</div>
-      </a>
-      <a href="services.html#gutter-installation" class="eps-service-card eps-animate">
-        <span class="eps-service-icon">🔧</span>
-        <h3>Gutter Installation & Guards</h3>
-        <p>New gutter installation and leaf guard systems to protect your home from water damage and reduce maintenance needs.</p>
-        <div class="eps-service-price">→ Learn More</div>
-      </a>
-      <a href="services.html#house-washing" class="eps-service-card eps-animate">
-        <span class="eps-service-icon">🏠</span>
-        <h3>House Washing</h3>
-        <p>Complete exterior house washing to restore your home's curb appeal. Safe for all exterior surfaces including brick, vinyl, and wood.</p>
-        <div class="eps-service-price">→ Learn More</div>
-      </a>
-      <a href="services.html#window-cleaning" class="eps-service-card eps-animate">
-        <span class="eps-service-icon">🪟</span>
-        <h3>Window Cleaning</h3>
-        <p>Professional interior and exterior window cleaning for residential and commercial properties. Streak-free guaranteed.</p>
-        <div class="eps-service-price">→ Learn More</div>
-      </a>
-      <a href="services.html#painting" class="eps-service-card eps-animate">
-        <span class="eps-service-icon">🎨</span>
-        <h3>Exterior & Interior Painting</h3>
-        <p>Professional painting services for both interior and exterior surfaces. Quality materials, expert prep, and clean finishes every time.</p>
-        <div class="eps-service-price">→ Learn More</div>
-      </a>
-      <a href="services.html#remodeling" class="eps-service-card eps-animate">
-        <span class="eps-service-icon">🏗</span>
-        <h3>Home Remodeling</h3>
-        <p>Full home remodeling services including kitchen, bathroom, basement, and general renovations. Transform your living space.</p>
-        <div class="eps-service-price">→ Learn More</div>
-      </a>
-    </div>
-  </div>
-</section>
-
-<!-- WHY US -->
-<section class="eps-section eps-section-alt">
-  <div class="eps-wrap">
-    <div class="eps-heading eps-heading-center eps-animate">
-      <span class="eps-eyebrow">Why Choose Us</span>
-      <div class="eps-line"></div>
-      <h2>The EPS Difference</h2>
-      <p>We don't just clean your property — we protect it. Every job is done right the first time.</p>
-    </div>
-    <div class="eps-why-grid">
-      <div class="eps-why-box eps-animate"><span class="eps-why-icon">👨‍👩‍👧</span><h3>Family Owned</h3><p>We treat every property like our own. Personal service from the owner on every job.</p></div>
-      <div class="eps-why-box eps-animate"><span class="eps-why-icon">🛡</span><h3>Licensed & Insured</h3><p>Fully licensed and insured for your peace of mind on every residential and commercial project.</p></div>
-      <div class="eps-why-box eps-animate"><span class="eps-why-icon">⭐</span><h3>5-Star Reviews</h3><p>Hundreds of satisfied customers across metro Atlanta. Our reputation speaks for itself.</p></div>
-      <div class="eps-why-box eps-animate"><span class="eps-why-icon">✅</span><h3>Satisfaction Guaranteed</h3><p>Not happy with the results? We come back and make it right. No questions asked.</p></div>
-    </div>
-  </div>
-</section>
-
-<!-- GALLERY PREVIEW -->
-<section class="eps-section eps-section-gray" id="gallery-preview">
-  <div class="eps-wrap">
-    <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:40px;flex-wrap:wrap;gap:14px" class="eps-animate">
-      <div class="eps-heading" style="margin-bottom:0">
-        <span class="eps-eyebrow">Our Work</span>
-        <div class="eps-line"></div>
-        <h2 style="margin-bottom:0">Recent Projects</h2>
+<!-- ABOUT / SERVICE INFO -->
+<div class="p180-section p180-section-alt">
+  <div class="p180-wrap">
+    <div class="p180-buyer-grid">
+      <div class="p180-buyer-body">
+        <h2>Professional Property Services</h2>
+        <p>Escobar Property Services, LLC (EPS) is a family owned and operated company serving metro Atlanta since 2018. Our mission is simple: to provide <strong>high-quality services</strong> for our valued clients.</p>
+        <p>Whether you need your driveway pressure washed, your gutters cleaned, your home painted, or a full interior remodel — we handle it all. <strong>Licensed, insured, and satisfaction guaranteed</strong> on every job.</p>
+        <p>Our team goes above and beyond to cater to each project's specific needs. Through open communication and exceptional service, we make sure every job exceeds your expectations.</p>
+        <p>Enter your information and we will get in touch with you shortly, or call us at <strong><a href="tel:6784882716" class="eps-phone" style="color:var(--orange)">678-488-2716</a></strong>.</p>
       </div>
-      <a href="gallery.html" class="eps-btn eps-btn-outline-dark eps-btn-sm">View Full Gallery →</a>
-    </div>
-    <div class="eps-gallery-grid" id="home-gallery">
-      <div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text-3)">
-        <p>Loading recent work…</p>
+      <div>
+        <div class="p180-vip-form">
+          <h3>Get a Free Quote Now!</h3>
+          <p>Tell us about your project and we'll get back to you within a few hours.</p>
+          <form class="eps-form" data-source="home-quote">
+            <div class="p180-row">
+              <div class="p180-field"><input name="name" type="text" placeholder="First Name:" required></div>
+              <div class="p180-field"><input name="lname" type="text" placeholder="Last Name:"></div>
+            </div>
+            <div class="p180-field"><input name="email" type="email" placeholder="E-mail Address:"></div>
+            <div class="p180-field"><input name="zip" type="text" placeholder="Zip Code:"></div>
+            <div class="p180-field"><input name="phone" type="tel" placeholder="Mobile Phone:" required></div>
+            <div class="p180-field">
+              <select name="service">
+                <option value="">Select a Service…</option>
+                <option>Pressure Washing</option>
+                <option>Soft Washing</option>
+                <option>Gutter Cleaning</option>
+                <option>House Washing</option>
+                <option>Window Cleaning</option>
+                <option>Painting</option>
+                <option>Home Remodeling</option>
+              </select>
+            </div>
+            <button type="submit" class="p180-btn-submit">Submit ✏️</button>
+            <div class="eps-form-msg"></div>
+          </form>
+          <p class="p180-privacy">🔒 We respect your privacy</p>
+        </div>
       </div>
     </div>
   </div>
-</section>
+</div>
+
+<!-- OUR SERVICES -->
+<div class="p180-section">
+  <div class="p180-wrap">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;flex-wrap:wrap;gap:12px">
+      <h2 class="p180-section-head" style="margin-bottom:0;border:none">Our Services</h2>
+      <a href="services.html" style="font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:800;color:var(--brand);text-decoration:none;text-transform:uppercase;letter-spacing:.5px">VIEW ALL SERVICES →</a>
+    </div>
+    <div class="p180-prop-grid">
+      <a href="services.html#pressure-washing" class="p180-prop-card">
+        <div class="p180-prop-card-icon">🔫</div>
+        <div class="p180-prop-card-body">
+          <h4>Pressure Washing</h4>
+          <div class="p180-prop-card-city">Driveways · Patios · Walkways</div>
+        </div>
+      </a>
+      <a href="services.html#soft-washing" class="p180-prop-card">
+        <div class="p180-prop-card-icon">🚿</div>
+        <div class="p180-prop-card-body">
+          <h4>Soft Washing</h4>
+          <div class="p180-prop-card-city">Roofs · Siding · Fences</div>
+        </div>
+      </a>
+      <a href="services.html#gutter-cleaning" class="p180-prop-card">
+        <div class="p180-prop-card-icon">🍂</div>
+        <div class="p180-prop-card-body">
+          <h4>Gutter Cleaning</h4>
+          <div class="p180-prop-card-city">Cleaning · Guards · Install</div>
+        </div>
+      </a>
+      <a href="services.html#house-washing" class="p180-prop-card">
+        <div class="p180-prop-card-icon">🏠</div>
+        <div class="p180-prop-card-body">
+          <h4>House Washing</h4>
+          <div class="p180-prop-card-city">All Exterior Surfaces</div>
+        </div>
+      </a>
+      <a href="services.html#window-cleaning" class="p180-prop-card">
+        <div class="p180-prop-card-icon">🪟</div>
+        <div class="p180-prop-card-body">
+          <h4>Window Cleaning</h4>
+          <div class="p180-prop-card-city">Residential · Commercial</div>
+        </div>
+      </a>
+      <a href="services.html#painting" class="p180-prop-card">
+        <div class="p180-prop-card-icon">🎨</div>
+        <div class="p180-prop-card-body">
+          <h4>Exterior Painting</h4>
+          <div class="p180-prop-card-city">Interior · Exterior · Trim</div>
+        </div>
+      </a>
+      <a href="services.html#remodeling" class="p180-prop-card">
+        <div class="p180-prop-card-icon">🏗</div>
+        <div class="p180-prop-card-body">
+          <h4>Home Remodeling</h4>
+          <div class="p180-prop-card-city">Kitchen · Bath · Full Reno</div>
+        </div>
+      </a>
+      <a href="contact.html" class="p180-prop-card" style="border-top-color:var(--brand);background:var(--brand);display:flex;align-items:center;justify-content:center;text-decoration:none">
+        <div style="text-align:center;padding:20px">
+          <div style="font-size:40px;margin-bottom:10px">📞</div>
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:900;color:#fff;text-transform:uppercase">Get Free Estimate</div>
+          <div style="font-family:'Barlow',sans-serif;font-size:12px;color:rgba(255,255,255,.7);margin-top:4px">No obligation</div>
+        </div>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- WORK WITH US -->
+<div class="p180-section p180-section-alt">
+  <div class="p180-wrap">
+    <h2 class="p180-section-head">Work With Us!</h2>
+    <p class="p180-section-sub">At Escobar Property Services, we believe that quality work and honest communication are the keys to a great experience. Our team goes above and beyond on every project — big or small. <a href="contact.html" style="color:var(--orange);font-weight:700">Contact us</a> today for your free estimate.</p>
+    <div class="p180-work-grid">
+      <a href="about.html" class="p180-work-box">
+        <span class="p180-work-box-icon">👨‍👩‍👧</span>
+        <h4>About Us</h4>
+        <p>Family owned &amp; operated since 2018. Licensed, insured, and committed to excellence on every job in metro Atlanta.</p>
+      </a>
+      <a href="gallery.html" class="p180-work-box">
+        <span class="p180-work-box-icon">📸</span>
+        <h4>Our Work</h4>
+        <p>Browse our photo gallery of completed projects. Real results from real jobs across metro Atlanta.</p>
+      </a>
+      <a href="why.html" class="p180-work-box">
+        <span class="p180-work-box-icon">⭐</span>
+        <h4>Testimonials</h4>
+        <p>Browse reviews from satisfied customers across metro Atlanta who trusted EPS with their properties.</p>
+      </a>
+      <a href="services.html" class="p180-work-box">
+        <span class="p180-work-box-icon">🔧</span>
+        <h4>All Services</h4>
+        <p>From pressure washing to full home remodeling — we offer a complete range of residential and commercial property services.</p>
+      </a>
+    </div>
+  </div>
+</div>
 
 <!-- TESTIMONIALS -->
-<section class="eps-section eps-section-alt">
-  <div class="eps-wrap">
-    <div class="eps-heading eps-heading-center eps-animate">
-      <span class="eps-eyebrow">Happy Customers</span>
-      <div class="eps-line"></div>
-      <h2>What Our Clients Say</h2>
-    </div>
-    <div class="eps-testi-grid">
-      <div class="eps-testi eps-animate">
-        <div class="eps-testi-stars">★★★★★</div>
-        <p>The service performed was excellent! My driveway and sidewalk looks practically new! Antonio was very professional and courteous. He went above and beyond to please the customer. Very satisfied!</p>
-        <div class="eps-testi-author">N. Rouse</div>
-        <div class="eps-testi-loc">Lawrenceville, GA</div>
+<div class="p180-section">
+  <div class="p180-wrap">
+    <h2 class="p180-section-head">Testimonials</h2>
+    <div class="p180-testi-list">
+      <div class="p180-testi">
+        <blockquote>"The service performed was excellent! My driveway and sidewalk looks practically new! Antonio was very professional and courteous. He went above and beyond to please the customer. You will be very satisfied with his performance."</blockquote>
+        <cite>N. Rouse — Lawrenceville, GA</cite>
       </div>
-      <div class="eps-testi eps-animate">
-        <div class="eps-testi-stars">★★★★★</div>
-        <p>I saw Escobar power washing my neighbor's driveway and he did such a great job I asked him to do mine too. Another great job at a fair price! I highly highly recommend him and will definitely use Escobar again.</p>
-        <div class="eps-testi-author">Happy Neighbor</div>
-        <div class="eps-testi-loc">Metro Atlanta, GA</div>
+      <div class="p180-testi">
+        <blockquote>"I saw Escobar power washing my neighbor's driveway and he did such a great job I asked him to do mine too. Another great job at a fair price! I highly highly recommend him and will definitely use Escobar again."</blockquote>
+        <cite>Happy Neighbor — Metro Atlanta, GA</cite>
       </div>
-      <div class="eps-testi eps-animate">
-        <div class="eps-testi-stars">★★★★★</div>
-        <p>Antonio did a great job pressure washing our deck, backyard and driveway. Professional, on time, and the results were amazing. Will definitely hire again for our annual cleaning.</p>
-        <div class="eps-testi-author">Verified Customer</div>
-        <div class="eps-testi-loc">Atlanta, GA</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- CTA BAND -->
-<div class="eps-cta-band">
-  <div class="eps-wrap">
-    <div class="eps-cta-inner">
-      <div>
-        <h2>Ready to Transform Your Property?</h2>
-        <p>Get your free estimate today — we respond within a few hours.</p>
-      </div>
-      <div class="eps-cta-actions">
-        <a href="contact.html" class="eps-btn" style="background:#fff;color:var(--orange);border-color:#fff;font-size:13px">Get Free Estimate →</a>
-        <a href="tel:6784882716" class="eps-btn eps-btn-outline" style="border-color:rgba(255,255,255,.6);color:#fff;font-size:13px">📞 Call Now</a>
+      <div class="p180-testi">
+        <blockquote>"Antonio did a great job pressure washing our deck, backyard and driveway. Professional, on time, and the results were amazing. Will definitely hire again."</blockquote>
+        <cite>Verified Customer — Atlanta, GA</cite>
       </div>
     </div>
   </div>
 </div>
 
-<footer class="eps-footer">
-  <div class="eps-wrap">
-    <div class="eps-footer-grid">
-      <div class="eps-footer-brand">
-        <span class="eps-footer-logo-name">Escobar Property Services</span>
-        <p class="eps-footer-desc">Family owned and operated property services company serving metro Atlanta since 2018. Licensed, insured, and committed to excellence on every job.</p>
-        <span class="eps-footer-tagline">Quality You Can See. Service You Can Trust.</span>
-      </div>
-      <div><h4>Services</h4><ul>
-        <li><a href="services.html#pressure-washing">Pressure Washing</a></li>
-        <li><a href="services.html#soft-washing">Soft Washing</a></li>
-        <li><a href="services.html#gutter-cleaning">Gutter Cleaning</a></li>
-        <li><a href="services.html#gutter-installation">Gutter Installation</a></li>
-        <li><a href="services.html#house-washing">House Washing</a></li>
-        <li><a href="services.html#window-cleaning">Window Cleaning</a></li>
-        <li><a href="services.html#painting">Exterior Painting</a></li>
-        <li><a href="services.html#remodeling">Home Remodeling</a></li>
-      </ul></div>
-      <div><h4>Company</h4><ul>
-        <li><a href="index.html">Home</a></li>
-        <li><a href="about.html">About Us</a></li>
-        <li><a href="gallery.html">Gallery</a></li>
-        <li><a href="faqs.html">FAQs</a></li>
-        <li><a href="contact.html">Contact Us</a></li>
-        <li><a href="contact.html">Free Estimate</a></li>
-      </ul></div>
-      <div><h4>Contact Us</h4>
-        <div class="eps-footer-contact">
-          <a href="tel:6784882716" class="eps-phone">📞 678-488-2716</a>
-          <a href="mailto:info@escobarps.com" class="eps-email">✉️ info@escobarps.com</a>
-          <span>📍 Metro Atlanta, GA</span>
-          <span>✅ Licensed & Insured</span>
-          <div style="margin-top:14px"><a href="contact.html" class="eps-btn eps-btn-orange eps-btn-sm">Get Free Estimate</a></div>
+<!-- FOOTER -->
+<footer class="p180-footer">
+  <div class="p180-footer-grid">
+    <div>
+      <span class="p180-footer-name">Escobar Property Services</span>
+      <p>Family owned and operated property services company serving metro Atlanta since 2018. Licensed, insured, and committed to excellence on every job.</p>
+      <p style="font-size:11px;text-transform:uppercase;letter-spacing:2px;color:rgba(255,255,255,.3);margin-top:10px;font-family:'Barlow',sans-serif">Quality You Can See. Service You Can Trust.</p>
+    </div>
+    <div><h4>Services</h4><ul>
+      <li><a href="services.html#pressure-washing">Pressure Washing</a></li>
+      <li><a href="services.html#soft-washing">Soft Washing</a></li>
+      <li><a href="services.html#gutter-cleaning">Gutter Cleaning</a></li>
+      <li><a href="services.html#house-washing">House Washing</a></li>
+      <li><a href="services.html#window-cleaning">Window Cleaning</a></li>
+      <li><a href="services.html#painting">Exterior Painting</a></li>
+      <li><a href="services.html#remodeling">Home Remodeling</a></li>
+    </ul></div>
+    <div><h4>Company</h4><ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About Us</a></li>
+      <li><a href="gallery.html">Gallery</a></li>
+      <li><a href="faqs.html">FAQs</a></li>
+      <li><a href="contact.html">Contact Us</a></li>
+      <li><a href="contact.html">Free Estimate</a></li>
+    </ul></div>
+    <div><h4>Contact Us</h4>
+      <div class="p180-footer-contact">
+        <a href="tel:6784882716" class="eps-phone">📞 678-488-2716</a>
+        <a href="mailto:info@escobarps.com" class="eps-email">✉️ info@escobarps.com</a>
+        <span>📍 Metro Atlanta, GA</span>
+        <span>✅ Licensed &amp; Insured</span>
+        <div style="margin-top:14px">
+          <a href="contact.html" style="display:inline-block;background:var(--orange);color:#fff;font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;padding:10px 20px;border-radius:3px;text-decoration:none">Get Free Estimate →</a>
         </div>
       </div>
     </div>
-    <div class="eps-footer-bar">
-      <span>&copy; <span class="eps-year"></span> Escobar Property Services, LLC &middot; All Rights Reserved</span>
-      <span>Metro Atlanta Property Services</span>
-    </div>
+  </div>
+  <div class="p180-footer-bar">
+    <span>&copy; <span class="eps-year"></span> Escobar Property Services, LLC &middot; All Rights Reserved</span>
+    <span>Metro Atlanta Property Services</span>
   </div>
 </footer>
-<div id="eps-lightbox" class="eps-lightbox" onclick="epsCloseLightbox()">
-  <button class="eps-lightbox-close" onclick="epsCloseLightbox()">✕</button>
-  <button class="eps-lightbox-nav eps-lightbox-prev" onclick="epsLightboxNav(-1);event.stopPropagation()">‹</button>
-  <img id="eps-lb-img" src="" alt="" onclick="event.stopPropagation()">
-  <button class="eps-lightbox-nav eps-lightbox-next" onclick="epsLightboxNav(1);event.stopPropagation()">›</button>
-</div>
-<script src="theme.js"></script>
 
+<script src="theme.js"></script>
 <script>
-// Load gallery preview (first 6 items)
 function waitForEPS(cb){if(window.EPS){cb(window.EPS);return;}var a=0,t=setInterval(function(){a++;if(window.EPS){clearInterval(t);cb(window.EPS);}else if(a>80)clearInterval(t);},50);}
 
-waitForEPS(async function(g){
-  var grid=document.getElementById('home-gallery');
-  if(!grid)return;
-  try{
-    var r=await fetch(g.SB_URL+'/rest/v1/eps_gallery?order=created_at.desc&limit=6',{headers:g.H});
-    var items=await r.json();
-    if(!items||!items.length){grid.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text-3)"><p>Gallery photos coming soon. Check back!</p></div>';return;}
-    var imgs=items.map(function(i){return i.image_url;});
-    grid.innerHTML=items.map(function(item,i){
-      return '<div class="eps-gallery-item eps-animate" onclick="epsOpenLightbox('+JSON.stringify(imgs)+','+i+')">'
-        +'<img src="'+item.image_url+'" alt="'+item.service+'" loading="lazy">'
-        +'<div class="eps-gallery-item-overlay"><span>'+item.service+'</span></div>'
-        +'</div>';
-    }).join('');
-  }catch(e){grid.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text-3)"><p>Gallery coming soon!</p></div>';}
+// Form submissions
+document.querySelectorAll('.eps-form').forEach(function(form){
+  form.addEventListener('submit',async function(e){
+    e.preventDefault();
+    var btn=form.querySelector('[type=submit]');
+    var msg=form.querySelector('.eps-form-msg');
+    var orig=btn.textContent;
+    btn.disabled=true;btn.textContent='Sending…';
+    var SBU='https://cqwvnvcjxbeskvyqrank.supabase.co';
+    var KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNxd3ZudmNqeGJlc2t2eXFyYW5rIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMwMjg5OTMsImV4cCI6MjA4ODYwNDk5M30.pavJBT9fpyoKPH9zbn-9pcUY72gaOB6qL76QMCtFoWw';
+    var data={
+      name:(form.querySelector('[name=name]')||{}).value||null,
+      email:(form.querySelector('[name=email]')||{}).value||null,
+      phone:(form.querySelector('[name=phone]')||{}).value||null,
+      service:(form.querySelector('[name=service]')||{}).value||null,
+      address:(form.querySelector('[name=address]')||{}).value||null,
+      zip:(form.querySelector('[name=zip]')||{}).value||null,
+      message:(form.querySelector('[name=message]')||{}).value||null,
+      source:form.dataset.source||'website'
+    };
+    try{
+      var r=await fetch(SBU+'/rest/v1/eps_leads',{method:'POST',headers:{'apikey':KEY,'Authorization':'Bearer '+KEY,'Content-Type':'application/json','Prefer':'return=minimal'},body:JSON.stringify(data)});
+      if(!r.ok)throw new Error();
+      if(msg){msg.className='eps-form-msg success';msg.textContent='✓ Thank you! We will contact you within 24 hours.';}
+      form.reset();
+    }catch(err){
+      if(msg){msg.className='eps-form-msg error';msg.textContent='Something went wrong. Please call us directly.';}
+    }
+    btn.disabled=false;btn.textContent=orig;
+  });
 });
+
+waitForEPS(async function(g){
+  // Hero video/bg
+  var vid=g.settings.hero_video_url;
+  if(vid&&vid.trim()){
+    var wrap=document.getElementById('hero-video-wrap');
+    if(wrap){
+      var src='',m;
+      if(vid.includes('youtube.com')||vid.includes('youtu.be')){m=vid.match(/(?:v=|youtu\.be\/)([^&?/]+)/);if(m)src='https://www.youtube.com/embed/'+m[1]+'?rel=0';}
+      else if(vid.includes('vimeo.com')){m=vid.match(/vimeo\.com\/(\d+)/);if(m)src='https://player.vimeo.com/video/'+m[1];}
+      if(src)wrap.innerHTML='<iframe src="'+src+'" allow="autoplay; fullscreen" allowfullscreen style="width:100%;height:100%;border:none;display:block"></iframe>';
+      else if(vid.match(/\.(mp4|webm)$/i))wrap.innerHTML='<video src="'+vid+'" controls playsinline style="width:100%;height:100%;object-fit:cover"></video>';
+    }
+  }
+  var heroImg=g.settings.hero_image_url;
+  if(heroImg){var bg=document.getElementById('eps-hero-bg');if(bg)bg.style.backgroundImage='url('+heroImg+')';}
+
+  // Featured — most recent gallery photo
+  var feat=document.getElementById('featured-single');
+  try{
+    var r=await fetch(g.SB_URL+'/rest/v1/eps_gallery?order=created_at.desc&limit=1',{headers:g.H});
+    var items=await r.json();
+    if(items&&items.length){
+      var item=items[0];
+      feat.innerHTML='<div class="p180-featured-img"><img src="'+item.image_url+'" alt="'+item.service+'"></div>'
+        +'<div class="p180-featured-body">'
+        +'<span class="p180-featured-label">Recent Work</span>'
+        +'<h3>'+item.service+'</h3>'
+        +(item.caption?'<p>'+item.caption+'</p>':'<p>Professional '+item.service.toLowerCase()+' service delivered with attention to detail and quality workmanship across metro Atlanta.</p>')
+        +'<div class="p180-featured-meta"><span><strong>Service:</strong> '+item.service+'</span><span><strong>Area:</strong> Metro Atlanta, GA</span></div>'
+        +'<a href="gallery.html" style="display:inline-block;background:var(--orange);color:#fff;font-family:\'Barlow Condensed\',sans-serif;font-size:14px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;padding:10px 20px;border-radius:3px;text-decoration:none">VIEW GALLERY →</a>'
+        +'</div>';
+    } else {
+      feat.innerHTML='<div style="grid-column:1/-1;padding:40px;text-align:center;color:#999;font-family:\'Barlow\',sans-serif">No photos yet. Add some from the admin panel!</div>';
+    }
+  }catch(e){feat.innerHTML='<div style="grid-column:1/-1;padding:40px;text-align:center;color:#999;font-family:\'Barlow\',sans-serif">Add photos from the admin panel to show your work here.</div>';}
+});
+
+// Footer year
+document.querySelectorAll('.eps-year').forEach(function(el){el.textContent=new Date().getFullYear();});
 </script>
-</body></html>
+</body>
+</html>
