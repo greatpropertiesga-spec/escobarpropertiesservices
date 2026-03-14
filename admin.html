@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Admin — Escobar Property Services</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --brand:#0d2137;--brand-2:#162d47;--accent:#e86c1f;--accent-dark:#c85a10;
+  --bg:#f4f6f9;--surface:#fff;--card:#fff;--border:#dde1e7;--border-2:#c9cfd6;
+  --text:#0d2137;--text-2:#4a5568;--text-3:#8a9ab0;
+  --green:#16a34a;--red:#dc2626;--blue:#2563eb;--amber:#d97706;
+  --sw:218px;--radius:6px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden}
+body{font-family:'Barlow',Arial,sans-serif;background:var(--bg);color:var(--text);font-size:13.5px;-webkit-font-smoothing:antialiased;line-height:1.5}
+.shell{display:flex;height:100vh}
+/* SIDEBAR */
+.sidebar{width:var(--sw);flex-shrink:0;background:var(--brand);display:flex;flex-direction:column}
+.s-logo{padding:20px 16px 14px;border-bottom:1px solid rgba(255,255,255,.1)}
+.s-logo-name{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:900;color:#fff;text-transform:uppercase;letter-spacing:.5px;display:block}
+.s-logo-sub{font-size:10px;color:rgba(255,255,255,.45);margin-top:2px;display:block}
+.s-logo-badge{display:inline-block;background:var(--accent);color:#fff;font-size:9px;font-weight:700;padding:2px 7px;border-radius:2px;text-transform:uppercase;letter-spacing:1px;margin-top:6px}
+.s-nav{flex:1;overflow-y:auto;padding:8px}
+.s-section{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.3);padding:12px 10px 4px}
+.s-item{display:flex;align-items:center;gap:9px;padding:9px 10px;border-radius:5px;cursor:pointer;font-size:13px;font-weight:500;color:rgba(255,255,255,.6);transition:all .14s;margin-bottom:1px;user-select:none}
+.s-item:hover{background:rgba(255,255,255,.08);color:#fff}
+.s-item.on{background:rgba(255,255,255,.14);color:#fff;font-weight:700}
+.s-icon{width:18px;text-align:center;font-size:15px}
+.s-badge{margin-left:auto;min-width:18px;height:18px;background:var(--accent);color:#fff;font-size:9px;font-weight:700;border-radius:50px;display:flex;align-items:center;justify-content:center;padding:0 5px}
+.s-badge.blue{background:var(--blue)}
+.s-foot{padding:12px 14px;border-top:1px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:space-between}
+.conn{display:flex;align-items:center;gap:6px}
+.conn-dot{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.2);transition:all .3s}
+.conn-dot.ok{background:#4ade80;box-shadow:0 0 6px #4ade80}
+.conn-dot.err{background:var(--red)}
+.conn-label{font-size:10px;color:rgba(255,255,255,.4)}
+/* MAIN */
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.topbar{height:52px;flex-shrink:0;background:#fff;border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 24px;gap:14px;box-shadow:0 1px 3px rgba(0,0,0,.05)}
+.tb-title{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:900;color:var(--text);text-transform:uppercase;letter-spacing:.3px;flex:1}
+.tb-right{display:flex;align-items:center;gap:8px}
+.content{flex:1;overflow-y:auto;padding:24px}
+.view{display:none}.view.on{display:block}
+/* PAGE HEADER */
+.ph{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:20px;gap:12px;flex-wrap:wrap}
+.ph-l h2{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:900;color:var(--text);text-transform:uppercase;letter-spacing:.3px}
+.ph-l p{font-size:11.5px;color:var(--text-3);margin-top:2px}
+.ph-r{display:flex;gap:8px;align-items:center;flex-shrink:0}
+/* STATS */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
+.stat{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:16px;border-left:4px solid var(--accent)}
+.stat-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--text-3)}
+.stat-val{font-family:'JetBrains Mono',monospace;font-size:28px;font-weight:600;color:var(--brand);margin:5px 0 2px;line-height:1}
+.stat-note{font-size:11px;color:var(--text-3)}
+/* CARD */
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:16px;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+.card-head{padding:12px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:10px;background:#fafbfc}
+.card-head h3{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:800;color:var(--text);text-transform:uppercase;letter-spacing:.3px}
+.card-body{padding:18px}
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;gap:5px;padding:7px 14px;border-radius:5px;border:none;font-size:12px;font-weight:600;cursor:pointer;font-family:'Barlow',sans-serif;transition:all .14s;text-decoration:none;white-space:nowrap}
+.btn-primary{background:var(--brand);color:#fff}
+.btn-primary:hover{background:var(--brand-2)}
+.btn-accent{background:var(--accent);color:#fff}
+.btn-accent:hover{background:var(--accent-dark)}
+.btn-ghost{background:transparent;color:var(--text-2);border:1px solid var(--border)}
+.btn-ghost:hover{background:var(--bg);border-color:var(--border-2)}
+.btn-danger{background:rgba(220,38,38,.08);color:var(--red);border:1px solid rgba(220,38,38,.15)}
+.btn-danger:hover{background:rgba(220,38,38,.15)}
+.btn-green{background:rgba(22,163,74,.1);color:var(--green);border:1px solid rgba(22,163,74,.2)}
+.btn-sm{padding:5px 10px;font-size:11.5px;border-radius:4px}
+.btn-icon{padding:5px 7px}
+/* TABLE */
+.tw{overflow-x:auto}
+table{width:100%;border-collapse:collapse}
+thead th{text-align:left;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--text-3);padding:10px 14px;border-bottom:2px solid var(--border);background:#fafbfc;white-space:nowrap}
+td{padding:11px 14px;border-bottom:1px solid #f0f2f5;font-size:12.5px;vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:#f8fafc}
+.tda{display:flex;gap:4px;align-items:center}
+/* BADGE */
+.badge{display:inline-flex;align-items:center;padding:3px 8px;border-radius:50px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.4px}
+.b-new{background:rgba(37,99,235,.1);color:var(--blue);border:1px solid rgba(37,99,235,.2)}
+.b-contacted{background:rgba(217,119,6,.1);color:var(--amber);border:1px solid rgba(217,119,6,.2)}
+.b-qualified{background:rgba(22,163,74,.1);color:var(--green);border:1px solid rgba(22,163,74,.2)}
+.b-closed{background:rgba(100,100,100,.08);color:#666;border:1px solid rgba(100,100,100,.15)}
+.b-dead{background:rgba(220,38,38,.08);color:var(--red);border:1px solid rgba(220,38,38,.15)}
+/* OVERLAY */
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);backdrop-filter:blur(4px);z-index:200;align-items:center;justify-content:center;padding:20px}
+.overlay.open{display:flex}
+.modal{background:var(--card);border:1px solid var(--border);border-radius:10px;width:100%;max-width:620px;max-height:92vh;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 20px 60px rgba(0,0,0,.15)}
+.modal-head{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;background:#fafbfc}
+.modal-head h3{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:900;color:var(--text);text-transform:uppercase;letter-spacing:.3px}
+.modal-x{background:rgba(0,0,0,.06);border:none;color:var(--text-2);cursor:pointer;width:28px;height:28px;border-radius:5px;font-size:14px;display:flex;align-items:center;justify-content:center}
+.modal-x:hover{background:rgba(0,0,0,.12)}
+.modal-body{padding:20px;overflow-y:auto;flex:1}
+/* FORM */
+.fg{display:flex;flex-direction:column;gap:4px;margin-bottom:12px}
+.fg label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--text-3)}
+.fg input,.fg select,.fg textarea{background:#fff;border:1.5px solid var(--border);border-radius:5px;padding:9px 12px;color:var(--text);font-size:13px;font-family:'Barlow',sans-serif;transition:border-color .14s;width:100%}
+.fg input:focus,.fg select:focus,.fg textarea:focus{outline:none;border-color:var(--accent)}
+.fg textarea{resize:vertical;min-height:80px;line-height:1.5}
+.fg small{font-size:10px;color:var(--text-3);line-height:1.4}
+.fgrid{display:grid;grid-template-columns:1fr 1fr;gap:0 14px}
+.fgrid .fg.full{grid-column:1/-1}
+.f-section{grid-column:1/-1;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:var(--accent);padding:12px 0 6px;border-bottom:2px solid rgba(232,108,31,.15);margin-bottom:4px}
+.f-actions{display:flex;gap:8px;justify-content:flex-end;padding-top:14px;border-top:1px solid var(--border);margin-top:6px;grid-column:1/-1}
+/* SETTINGS ROW */
+.srow{display:grid;grid-template-columns:180px 1fr 80px;align-items:start;gap:12px;padding:14px 0;border-bottom:1px solid var(--border)}
+.srow:last-child{border-bottom:none}
+.sr-name{font-size:13px;font-weight:600;color:var(--text)}
+.sr-key{font-family:'JetBrains Mono',monospace;font-size:9.5px;color:var(--text-3);margin-top:2px}
+.sr-desc{font-size:11px;color:var(--text-3);margin-top:4px;line-height:1.4}
+/* GALLERY GRID */
+.gal-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.gal-item{background:var(--bg);border:1px solid var(--border);border-radius:5px;overflow:hidden;transition:border-color .14s}
+.gal-item:hover{border-color:var(--accent)}
+.gal-thumb{height:110px;overflow:hidden;background:#e8ecf0}
+.gal-thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.gal-info{padding:8px}
+.gal-name{font-size:10.5px;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-bottom:5px}
+.gal-act{display:flex;gap:4px}
+/* MEDIA */
+.mgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px}
+.mitem{background:var(--bg);border:1px solid var(--border);border-radius:5px;overflow:hidden}
+.mthumb{height:90px;overflow:hidden;background:#e8ecf0;display:flex;align-items:center;justify-content:center}
+.mthumb img{width:100%;height:100%;object-fit:cover}
+.minfo{padding:7px}
+.mname{font-size:10px;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-bottom:4px}
+.uzone{border:2px dashed var(--border-2);border-radius:8px;padding:28px 20px;text-align:center;cursor:pointer;transition:all .18s;position:relative;background:#fafbfc;margin-bottom:14px}
+.uzone:hover,.uzone.drag{border-color:var(--accent);background:rgba(232,108,31,.04)}
+.uzone input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+/* LEAD DETAIL */
+.lgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+.lfield label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--text-3);display:block;margin-bottom:3px}
+.lfield span{font-size:13.5px;color:var(--text)}
+/* LOADING/EMPTY */
+.loading{text-align:center;padding:30px;color:var(--text-3);font-size:12px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.spin{display:inline-block;width:14px;height:14px;border:2px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .65s linear infinite;vertical-align:middle;margin-right:5px}
+.empty{text-align:center;padding:44px 20px}
+.empty-icon{font-size:36px;opacity:.2;display:block;margin-bottom:10px}
+.empty h4{font-size:14px;font-weight:600;color:var(--text-2);margin-bottom:4px}
+.empty p{font-size:12px;color:var(--text-3)}
+/* TOASTS */
+.toasts{position:fixed;bottom:20px;right:20px;z-index:999;display:flex;flex-direction:column;gap:6px;pointer-events:none}
+.toast{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:10px 16px;font-size:12.5px;font-weight:500;min-width:240px;box-shadow:0 8px 24px rgba(0,0,0,.1);transform:translateX(calc(100% + 24px));transition:transform .25s cubic-bezier(.22,.68,0,1.2);display:flex;align-items:center;gap:9px;pointer-events:all}
+.toast.show{transform:translateX(0)}
+.toast.ok{border-left:3px solid var(--green)}
+.toast.err{border-left:3px solid var(--red)}
+.toast.inf{border-left:3px solid var(--blue)}
+/* QUICK THUMB */
+.pthumbs{display:flex;gap:4px;flex-wrap:wrap}
+.pthumb{width:42px;height:32px;border-radius:3px;object-fit:cover;border:1px solid var(--border)}
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(0,0,0,.12);border-radius:10px}
+::-webkit-scrollbar-thumb:hover{background:rgba(0,0,0,.2)}
+@media(max-width:860px){
+  .sidebar{width:52px}
+  .s-logo-sub,.s-logo-badge,.s-section,.s-item span,.s-badge,.conn-label{display:none}
+  .s-item{justify-content:center;padding:10px}
+  .stats{grid-template-columns:1fr 1fr}
+  .fgrid{grid-template-columns:1fr}
+  .srow{grid-template-columns:1fr}
+  .content{padding:14px}
+}
+</style>
+</head>
+<body>
+<div class="shell">
+
+<nav class="sidebar">
+  <div class="s-logo">
+    <span class="s-logo-name">Escobar Property Services</span>
+    <span class="s-logo-sub">Admin Panel</span>
+    <span class="s-logo-badge">EPS</span>
+  </div>
+  <div class="s-nav">
+    <div class="s-section">Overview</div>
+    <div class="s-item on" data-view="dashboard"><span class="s-icon">◫</span><span>Dashboard</span></div>
+    <div class="s-section">Content</div>
+    <div class="s-item" data-view="leads"><span class="s-icon">📋</span><span>Leads / Quotes</span><span class="s-badge red" id="nc-l">—</span></div>
+    <div class="s-item" data-view="gallery"><span class="s-icon">🖼</span><span>Gallery</span><span class="s-badge" id="nc-g">—</span></div>
+    <div class="s-item" data-view="media"><span class="s-icon">📸</span><span>Media / Fotos</span></div>
+    <div class="s-section">Site</div>
+    <div class="s-item" data-view="settings"><span class="s-icon">⚙</span><span>Configuración</span></div>
+  </div>
+  <div class="s-foot">
+    <div class="conn"><div class="conn-dot" id="cdot"></div><span class="conn-label" id="ctxt">…</span></div>
+    <a href="https://escobarpropertyservices.com" target="_blank" class="btn btn-sm" style="background:rgba(255,255,255,.1);color:#fff;font-size:11px">Ver Sitio ↗</a>
+  </div>
+</nav>
+
+<div class="main">
+  <div class="topbar">
+    <div class="tb-title" id="ptitle">Dashboard</div>
+    <div class="tb-right">
+      <span style="font-size:11px;color:var(--text-3);font-family:'JetBrains Mono',monospace" id="tb-date"></span>
+      <a href="https://escobarpropertyservices.com" target="_blank" class="btn btn-ghost btn-sm">Ver Sitio ↗</a>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- DASHBOARD -->
+    <div class="view on" id="view-dashboard">
+      <div class="ph"><div class="ph-l"><h2>Dashboard</h2><p>Resumen en tiempo real</p></div></div>
+      <div class="stats">
+        <div class="stat"><div class="stat-label">Leads Total</div><div class="stat-val" id="sv-l">—</div><div class="stat-note">formularios recibidos</div></div>
+        <div class="stat" style="border-left-color:var(--red)"><div class="stat-label">Nuevos</div><div class="stat-val" id="sv-n">—</div><div class="stat-note">sin contactar</div></div>
+        <div class="stat" style="border-left-color:var(--green)"><div class="stat-label">Fotos Gallery</div><div class="stat-val" id="sv-g">—</div><div class="stat-note">en el sitio</div></div>
+        <div class="stat" style="border-left-color:var(--blue)"><div class="stat-label">Este Mes</div><div class="stat-val" id="sv-m">—</div><div class="stat-note">leads este mes</div></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+        <div class="card">
+          <div class="card-head"><h3>🔥 Últimos Leads</h3><button class="btn btn-ghost btn-sm" onclick="goTo('leads')">Ver todos</button></div>
+          <div id="d-leads"><div class="loading"><span class="spin"></span>Cargando…</div></div>
+        </div>
+        <div class="card">
+          <div class="card-head"><h3>🖼 Últimas Fotos</h3><button class="btn btn-accent btn-sm" onclick="goTo('gallery')">+ Agregar foto</button></div>
+          <div id="d-gallery"><div class="loading"><span class="spin"></span>Cargando…</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- LEADS -->
+    <div class="view" id="view-leads">
+      <div class="ph">
+        <div class="ph-l"><h2>Leads / Quotes</h2><p>Solicitudes de presupuesto recibidas</p></div>
+        <div class="ph-r">
+          <select id="lf" onchange="loadLeads()" style="background:#fff;border:1px solid var(--border);border-radius:5px;padding:7px 11px;color:var(--text);font-size:12px;font-family:'Barlow',sans-serif">
+            <option value="">Todos</option>
+            <option value="new">🔵 Nuevos</option>
+            <option value="contacted">🟡 Contactados</option>
+            <option value="qualified">🟢 Calificados</option>
+            <option value="closed">⚫ Cerrados</option>
+            <option value="dead">🔴 Descartados</option>
+          </select>
+          <button class="btn btn-ghost btn-sm" onclick="exportCSV()">⬇ CSV</button>
+        </div>
+      </div>
+      <div class="card"><div id="ltbl"><div class="loading"><span class="spin"></span>Cargando…</div></div></div>
+    </div>
+
+    <!-- GALLERY -->
+    <div class="view" id="view-gallery">
+      <div class="ph">
+        <div class="ph-l"><h2>Gallery</h2><p>Fotos de trabajos realizados que aparecen en el sitio</p></div>
+        <div class="ph-r"><button class="btn btn-accent" onclick="openGalleryModal()">+ Agregar Foto</button></div>
+      </div>
+      <div class="card"><div class="card-body" id="galtbl"><div class="loading"><span class="spin"></span>Cargando…</div></div></div>
+    </div>
+
+    <!-- MEDIA -->
+    <div class="view" id="view-media">
+      <div class="ph">
+        <div class="ph-l"><h2>Media / Fotos</h2><p>Sube fotos → copia la URL → úsala en Gallery o Settings</p></div>
+        <div class="ph-r"><button class="btn btn-ghost btn-sm" onclick="loadMedia()">🔄 Recargar</button></div>
+      </div>
+      <div class="card">
+        <div class="card-head"><h3>☁️ Subir Archivos</h3></div>
+        <div class="card-body">
+          <div class="uzone" id="uzone">
+            <input type="file" multiple accept="image/*" onchange="uploadFiles(this.files)">
+            <div style="font-size:36px;margin-bottom:10px">📸</div>
+            <p style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:4px">Click o arrastra imágenes aquí</p>
+            <p style="font-size:12px;color:var(--text-3)">JPG, PNG, WebP — máx 50MB</p>
+          </div>
+          <div id="uprog"></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-head"><h3>📁 Archivos Subidos <span style="font-size:11px;color:var(--text-3);font-weight:400">— Click en 📋 para copiar URL</span></h3></div>
+        <div class="card-body" id="mbody"><div class="loading"><span class="spin"></span>Cargando…</div></div>
+      </div>
+    </div>
+
+    <!-- SETTINGS -->
+    <div class="view" id="view-settings">
+      <div class="ph">
+        <div class="ph-l"><h2>Configuración del Sitio</h2><p>Video del hero, teléfono, email, texto principal</p></div>
+        <div class="ph-r"><button class="btn btn-accent" onclick="saveAllSettings()">💾 Guardar Todo</button></div>
+      </div>
+      <div class="card">
+        <div class="card-head"><h3>🎬 Video del Hero</h3></div>
+        <div class="card-body">
+          <div class="srow">
+            <div><div class="sr-name">URL del Video</div><div class="sr-key">hero_video_url</div><div class="sr-desc">YouTube, Vimeo, o MP4 directo</div></div>
+            <div><input type="url" id="s-hero_video_url" placeholder="https://www.youtube.com/watch?v=..." style="width:100%;background:#fff;border:1.5px solid var(--border);border-radius:5px;padding:9px 12px;font-size:13px;color:var(--text)"></div>
+            <div><button class="btn btn-ghost btn-sm" onclick="saveSetting('hero_video_url')">Guardar</button></div>
+          </div>
+          <div class="srow">
+            <div><div class="sr-name">Imagen de fondo Hero</div><div class="sr-key">hero_image_url</div><div class="sr-desc">Sube en Media y pega URL aquí</div></div>
+            <div><input type="url" id="s-hero_image_url" placeholder="https://…supabase…/storage/…" style="width:100%;background:#fff;border:1.5px solid var(--border);border-radius:5px;padding:9px 12px;font-size:13px;color:var(--text)"></div>
+            <div><button class="btn btn-ghost btn-sm" onclick="saveSetting('hero_image_url')">Guardar</button></div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-head"><h3>📞 Contacto</h3></div>
+        <div class="card-body">
+          <div class="srow">
+            <div><div class="sr-name">Teléfono</div><div class="sr-key">site_phone</div></div>
+            <div><input type="text" id="s-site_phone" placeholder="678-488-2716" style="width:100%;background:#fff;border:1.5px solid var(--border);border-radius:5px;padding:9px 12px;font-size:13px;color:var(--text)"></div>
+            <div><button class="btn btn-ghost btn-sm" onclick="saveSetting('site_phone')">Guardar</button></div>
+          </div>
+          <div class="srow">
+            <div><div class="sr-name">Email</div><div class="sr-key">site_email</div></div>
+            <div><input type="email" id="s-site_email" placeholder="info@escobarps.com" style="width:100%;background:#fff;border:1.5px solid var(--border);border-radius:5px;padding:9px 12px;font-size:13px;color:var(--text)"></div>
+            <div><button class="btn btn-ghost btn-sm" onclick="saveSetting('site_email')">Guardar</button></div>
+          </div>
+          <div class="srow">
+            <div><div class="sr-name">Título del Hero</div><div class="sr-key">hero_title</div></div>
+            <div><textarea id="s-hero_title" rows="2" placeholder="Metro Atlanta's Trusted Property Services" style="width:100%;background:#fff;border:1.5px solid var(--border);border-radius:5px;padding:9px 12px;font-size:13px;color:var(--text)"></textarea></div>
+            <div><button class="btn btn-ghost btn-sm" onclick="saveSetting('hero_title')">Guardar</button></div>
+          </div>
+          <div class="srow">
+            <div><div class="sr-name">Subtítulo Hero</div><div class="sr-key">hero_subtitle</div></div>
+            <div><textarea id="s-hero_subtitle" rows="2" style="width:100%;background:#fff;border:1.5px solid var(--border);border-radius:5px;padding:9px 12px;font-size:13px;color:var(--text)"></textarea></div>
+            <div><button class="btn btn-ghost btn-sm" onclick="saveSetting('hero_subtitle')">Guardar</button></div>
+          </div>
+          <div class="srow">
+            <div><div class="sr-name">Texto "About Us"</div><div class="sr-key">about_text</div></div>
+            <div><textarea id="s-about_text" rows="3" style="width:100%;background:#fff;border:1.5px solid var(--border);border-radius:5px;padding:9px 12px;font-size:13px;color:var(--text)"></textarea></div>
+            <div><button class="btn btn-ghost btn-sm" onclick="saveSetting('about_text')">Guardar</button></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</div>
+
+<!-- MODAL: ADD GALLERY PHOTO -->
+<div class="overlay" id="ov-g">
+  <div class="modal">
+    <div class="modal-head"><h3 id="gm-title">Agregar Foto a Gallery</h3><button class="modal-x" onclick="closeOv('ov-g')">✕</button></div>
+    <div class="modal-body">
+      <form onsubmit="saveGalleryItem(event)">
+        <input type="hidden" id="g-id">
+        <div class="fg"><label>URL de la Imagen *</label>
+          <input id="g-img" type="url" placeholder="https://…supabase…/storage/… (sube en Media primero)" required>
+          <small>Sube la foto en la sección Media → copia la URL → pégala aquí</small>
+        </div>
+        <!-- Quick media picker -->
+        <div class="fg"><label>O selecciona de tus fotos recientes</label>
+          <div id="gal-quick" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(80px,1fr));gap:6px;max-height:180px;overflow-y:auto;padding:8px;background:#f8fafc;border:1px solid var(--border);border-radius:5px">
+            <div style="grid-column:1/-1;text-align:center;padding:16px;color:var(--text-3);font-size:12px">Cargando…</div>
+          </div>
+          <small>Click en una foto para usar su URL</small>
+        </div>
+        <!-- Preview -->
+        <div id="g-preview" style="display:none;margin-bottom:12px">
+          <img id="g-preview-img" src="" style="width:100%;max-height:200px;object-fit:cover;border-radius:5px;border:1px solid var(--border)">
+        </div>
+        <div class="fg"><label>Servicio *</label>
+          <select id="g-service" required>
+            <option value="">Selecciona el servicio…</option>
+            <option>Pressure Washing</option>
+            <option>Soft Washing</option>
+            <option>Gutter Cleaning</option>
+            <option>Gutter Installation</option>
+            <option>House Washing</option>
+            <option>Window Cleaning</option>
+            <option>Exterior Painting</option>
+            <option>Interior Painting</option>
+            <option>Home Remodeling</option>
+            <option>Before & After</option>
+          </select>
+        </div>
+        <div class="fg"><label>Caption (opcional)</label>
+          <input id="g-caption" type="text" placeholder="Driveway cleaning in Lawrenceville, GA">
+        </div>
+        <div style="display:flex;gap:8px;justify-content:flex-end;padding-top:14px;border-top:1px solid var(--border)">
+          <button type="button" class="btn btn-ghost" onclick="closeOv('ov-g')">Cancelar</button>
+          <button type="submit" class="btn btn-accent">💾 Guardar Foto</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: LEAD DETAIL -->
+<div class="overlay" id="ov-l">
+  <div class="modal" style="max-width:520px">
+    <div class="modal-head"><h3>Detalle del Lead</h3><button class="modal-x" onclick="closeOv('ov-l')">✕</button></div>
+    <div class="modal-body" id="lm-body"></div>
+  </div>
+</div>
+
+<div class="toasts" id="toasts"></div>
+
+<script>
+const SBU = 'https://cqwvnvcjxbeskvyqrank.supabase.co';
+const KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNxd3ZudmNqeGJlc2t2eXFyYW5rIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMwMjg5OTMsImV4cCI6MjA4ODYwNDk5M30.pavJBT9fpyoKPH9zbn-9pcUY72gaOB6qL76QMCtFoWw';
+const BKT = 'gpga-media';
+const H = {'apikey':KEY,'Authorization':'Bearer '+KEY,'Content-Type':'application/json','Prefer':'return=representation'};
+
+// ── API ──────────────────────────────────────────────────
+async function GET(t,p){const r=await fetch(SBU+'/rest/v1/'+t+'?'+(p||''),{headers:H});if(!r.ok)throw new Error(await r.text());return r.json();}
+async function POST(t,d){const r=await fetch(SBU+'/rest/v1/'+t,{method:'POST',headers:H,body:JSON.stringify(d)});if(!r.ok)throw new Error(await r.text());return r.json();}
+async function DEL(t,id){const r=await fetch(SBU+'/rest/v1/'+t+'?id=eq.'+id,{method:'DELETE',headers:H});if(!r.ok)throw new Error(await r.text());}
+async function PATCH(t,id,d){const r=await fetch(SBU+'/rest/v1/'+t+'?id=eq.'+id,{method:'PATCH',headers:H,body:JSON.stringify(d)});if(!r.ok)throw new Error(await r.text());return r.json();}
+async function UPSERT(t,d,c){const r=await fetch(SBU+'/rest/v1/'+t+'?on_conflict='+c,{method:'POST',headers:{...H,'Prefer':'resolution=merge-duplicates,return=representation'},body:JSON.stringify(d)});if(!r.ok)throw new Error(await r.text());return r.json();}
+async function CNT(t,p){const r=await fetch(SBU+'/rest/v1/'+t+'?select=id&'+(p||''),{headers:{...H,'Prefer':'count=exact'}});return parseInt(r.headers.get('Content-Range')?.split('/')[1]||0);}
+
+// ── NAV ──────────────────────────────────────────────────
+const VIEWS={dashboard:'Dashboard',leads:'Leads / Quotes',gallery:'Gallery',media:'Media / Fotos',settings:'Configuración'};
+document.querySelectorAll('.s-item').forEach(b=>{
+  b.addEventListener('click',()=>{
+    const v=b.dataset.view;
+    document.querySelectorAll('.s-item').forEach(x=>x.classList.remove('on'));
+    b.classList.add('on');
+    document.querySelectorAll('.view').forEach(el=>el.classList.remove('on'));
+    document.getElementById('view-'+v).classList.add('on');
+    document.getElementById('ptitle').textContent=VIEWS[v];
+    if(v==='leads')loadLeads();
+    if(v==='gallery')loadGallery();
+    if(v==='media')loadMedia();
+    if(v==='settings')loadSettings();
+  });
+});
+function goTo(v){document.querySelector('.s-item[data-view="'+v+'"]').click();}
+document.getElementById('tb-date').textContent=new Date().toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric',year:'numeric'});
+
+// ── TOAST ──────────────────────────────────────────────
+function toast(msg,type='ok'){
+  const icons={ok:'✅',err:'❌',inf:'ℹ️'};
+  const w=document.getElementById('toasts');
+  const t=document.createElement('div');t.className='toast '+type;
+  t.innerHTML='<span>'+icons[type]+'</span><span>'+msg+'</span>';
+  w.appendChild(t);requestAnimationFrame(()=>requestAnimationFrame(()=>t.classList.add('show')));
+  setTimeout(()=>{t.classList.remove('show');setTimeout(()=>t.remove(),350);},3200);
+}
+
+// ── MODAL ──────────────────────────────────────────────
+function closeOv(id){document.getElementById(id).classList.remove('open');}
+function openOv(id){document.getElementById(id).classList.add('open');}
+document.querySelectorAll('.overlay').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('open');}));
+
+// ── DASHBOARD ──────────────────────────────────────────
+async function loadDashboard(){
+  try{
+    const now=new Date();const firstOfMonth=new Date(now.getFullYear(),now.getMonth(),1).toISOString();
+    const[tl,nl,tg,ml]=await Promise.all([CNT('eps_leads'),CNT('eps_leads','status=eq.new'),CNT('eps_gallery'),CNT('eps_leads','created_at=gte.'+firstOfMonth)]);
+    ['sv-l','sv-n','sv-g','sv-m'].forEach((id,i)=>document.getElementById(id).textContent=[tl,nl,tg,ml][i]);
+    document.getElementById('nc-l').textContent=nl>0?nl:'—';
+    document.getElementById('nc-g').textContent=tg;
+    document.getElementById('cdot').className='conn-dot ok';
+    document.getElementById('ctxt').textContent='Conectado';
+    const[leads,gal]=await Promise.all([GET('eps_leads','order=created_at.desc&limit=5'),GET('eps_gallery','order=created_at.desc&limit=6')]);
+    const dl=document.getElementById('d-leads');
+    if(!leads.length)dl.innerHTML='<div class="empty"><span class="empty-icon">📭</span><h4>Sin leads aún</h4><p>Aparecerán cuando alguien llene el formulario</p></div>';
+    else dl.innerHTML='<table><thead><tr><th>Nombre</th><th>Servicio</th><th>Teléfono</th><th>Estado</th></tr></thead><tbody>'+
+      leads.map(l=>'<tr style="cursor:pointer" onclick=\'openL('+JSON.stringify(l).replace(/'/g,"&#39;")+')\'>'+
+        '<td><strong>'+esc(l.name||'—')+'</strong><br><span style="font-size:10px;color:var(--text-3)">'+fd(l.created_at)+'</span></td>'+
+        '<td style="font-size:11.5px;color:var(--text-2)">'+esc(l.service||'—')+'</td>'+
+        '<td><a href="tel:'+esc(l.phone)+'" style="color:var(--accent);font-weight:600;text-decoration:none">'+esc(l.phone||'—')+'</a></td>'+
+        '<td><span class="badge b-'+(l.status||'new')+'">'+(l.status||'new')+'</span></td>'+
+        '</tr>').join('')+'</tbody></table>';
+    const dg=document.getElementById('d-gallery');
+    if(!gal.length)dg.innerHTML='<div class="empty"><span class="empty-icon">🖼</span><h4>Sin fotos</h4><p>Agrega fotos de tus trabajos</p></div>';
+    else dg.innerHTML='<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;padding:10px">'+
+      gal.map(i=>'<img src="'+i.image_url+'" style="width:100%;height:70px;object-fit:cover;border-radius:4px;border:1px solid var(--border)" loading="lazy">').join('')+'</div>';
+  }catch(e){document.getElementById('cdot').className='conn-dot err';document.getElementById('ctxt').textContent='Error';toast('Error de conexión','err');}
+}
+
+// ── LEADS ──────────────────────────────────────────────
+async function loadLeads(){
+  document.getElementById('ltbl').innerHTML='<div class="loading"><span class="spin"></span>Cargando…</div>';
+  const f=document.getElementById('lf')?.value;
+  let p='order=created_at.desc&limit=200';if(f)p+='&status=eq.'+f;
+  try{
+    const ls=await GET('eps_leads',p);
+    if(!ls.length){document.getElementById('ltbl').innerHTML='<div class="empty"><span class="empty-icon">📭</span><h4>Sin leads</h4><p>Aparecerán aquí cuando alguien llene un formulario del sitio</p></div>';return;}
+    document.getElementById('ltbl').innerHTML='<div class="tw"><table><thead><tr><th>Nombre</th><th>Servicio</th><th>Teléfono</th><th>Email</th><th>Dirección</th><th>Fecha</th><th>Estado</th><th></th></tr></thead><tbody>'+
+      ls.map(l=>'<tr>'+
+        '<td><strong>'+esc(l.name||'—')+'</strong></td>'+
+        '<td style="font-size:12px;color:var(--text-2)">'+esc(l.service||'—')+'</td>'+
+        '<td><a href="tel:'+esc(l.phone)+'" style="color:var(--accent);font-weight:600;text-decoration:none">'+esc(l.phone||'—')+'</a></td>'+
+        '<td style="font-size:11.5px">'+esc(l.email||'—')+'</td>'+
+        '<td style="font-size:11.5px;color:var(--text-2)">'+esc(l.address||l.zip||'—')+'</td>'+
+        '<td style="font-size:11px;color:var(--text-3);white-space:nowrap">'+fd(l.created_at)+'</td>'+
+        '<td><select onchange="updL(\''+l.id+'\',this.value)" style="background:#fff;border:1px solid var(--border);border-radius:4px;padding:4px 7px;color:var(--text);font-size:11px;font-family:Barlow,sans-serif">'+
+          ['new','contacted','qualified','closed','dead'].map(s=>'<option value="'+s+'"'+(l.status===s?' selected':'')+'>'+s+'</option>').join('')+
+        '</select></td>'+
+        '<td><div class="tda">'+
+          '<button class="btn btn-ghost btn-sm btn-icon" onclick=\'openL('+JSON.stringify(l).replace(/'/g,"&#39;")+')\'  title="Ver">👁</button>'+
+          '<button class="btn btn-danger btn-sm btn-icon" onclick="delL(\''+l.id+'\')" title="Eliminar">🗑</button>'+
+        '</div></td>'+
+      '</tr>').join('')+'</tbody></table></div>';
+  }catch(e){toast('Error cargando leads','err');}
+}
+async function updL(id,st){try{await PATCH('eps_leads',id,{status:st});toast('Lead: "'+st+'"','inf');loadDashboard();}catch(e){toast('Error','err');}}
+function openL(l){
+  document.getElementById('lm-body').innerHTML=
+    '<div class="lgrid">'+
+    '<div class="lfield"><label>Nombre</label><span>'+esc(l.name||'—')+'</span></div>'+
+    '<div class="lfield"><label>Teléfono</label><span><a href="tel:'+esc(l.phone)+'" style="color:var(--accent);font-weight:700;text-decoration:none">'+esc(l.phone||'—')+'</a></span></div>'+
+    '<div class="lfield"><label>Email</label><span>'+esc(l.email||'—')+'</span></div>'+
+    '<div class="lfield"><label>Servicio</label><span style="color:var(--accent);font-weight:600">'+esc(l.service||'—')+'</span></div>'+
+    '<div class="lfield"><label>Zip / Ciudad</label><span>'+esc(l.zip||'—')+'</span></div>'+
+    '<div class="lfield"><label>Fecha</label><span>'+fd(l.created_at)+'</span></div>'+
+    '<div class="lfield" style="grid-column:1/-1"><label>Dirección</label><span>'+esc(l.address||'—')+'</span></div>'+
+    '<div class="lfield" style="grid-column:1/-1"><label>Mensaje / Notas</label><span style="line-height:1.6">'+esc(l.message||'—')+'</span></div>'+
+    '<div class="lfield"><label>Estado</label>'+
+      '<select onchange="updL(\''+l.id+'\',this.value)" style="background:#fff;border:1px solid var(--border);border-radius:5px;padding:8px 12px;color:var(--text);width:100%;margin-top:2px;font-family:Barlow,sans-serif">'+
+        ['new','contacted','qualified','closed','dead'].map(s=>'<option value="'+s+'"'+(l.status===s?' selected':'')+'>'+s+'</option>').join('')+
+      '</select></div>'+
+    '</div>'+
+    '<div style="display:flex;gap:8px;padding-top:14px;border-top:1px solid var(--border);flex-wrap:wrap">'+
+    '<a href="tel:'+esc(l.phone)+'" class="btn btn-accent">📞 Llamar</a>'+
+    '<a href="mailto:'+esc(l.email)+'" class="btn btn-ghost">✉️ Email</a>'+
+    '<a href="sms:'+esc(l.phone)+'" class="btn btn-ghost">💬 SMS</a>'+
+    '</div>';
+  openOv('ov-l');
+}
+async function delL(id){if(!confirm('¿Eliminar este lead?'))return;try{await DEL('eps_leads',id);toast('Lead eliminado');loadLeads();loadDashboard();}catch(e){toast('Error','err');}}
+function exportCSV(){
+  GET('eps_leads','order=created_at.desc&limit=2000').then(ls=>{
+    const cols=['name','email','phone','service','zip','address','status','created_at','message','source'];
+    const rows=[cols,...ls.map(l=>cols.map(c=>'"'+(l[c]||'').toString().replace(/"/g,'""')+'"'))];
+    const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([rows.map(r=>r.join(',')).join('\n')],{type:'text/csv'}));
+    a.download='eps-leads-'+new Date().toISOString().slice(0,10)+'.csv';a.click();toast('CSV exportado ✓');
+  }).catch(()=>toast('Error','err'));
+}
+
+// ── GALLERY ────────────────────────────────────────────
+async function loadGallery(){
+  document.getElementById('galtbl').innerHTML='<div class="loading"><span class="spin"></span>Cargando…</div>';
+  try{
+    const items=await GET('eps_gallery','order=created_at.desc');
+    if(!items.length){document.getElementById('galtbl').innerHTML='<div class="empty"><span class="empty-icon">🖼</span><h4>Sin fotos aún</h4><p>Agrega fotos de tus trabajos para mostrarlas en el sitio</p></div>';return;}
+    document.getElementById('galtbl').innerHTML='<div class="gal-grid">'+items.map(item=>
+      '<div class="gal-item">'+
+      '<div class="gal-thumb"><img src="'+esc(item.image_url)+'" alt="'+esc(item.service||'')+'" loading="lazy" onerror="this.parentElement.innerHTML=\'<span style=font-size:28px;padding:20px;display:block>🖼</span>\'"></div>'+
+      '<div class="gal-info"><div class="gal-name" title="'+esc(item.service||'')+'">'+esc(item.service||'Sin categoría')+'</div>'+
+      (item.caption?'<div style="font-size:10px;color:var(--text-3);margin-bottom:5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+esc(item.caption)+'</div>':'')+'</div>'+
+      '<div class="gal-act" style="padding:0 8px 8px">'+
+      '<button class="btn btn-ghost btn-sm btn-icon" style="flex:1;font-size:10px" onclick=\'editGalleryItem('+JSON.stringify(item).replace(/'/g,"&#39;")+')\'">✏️ Editar</button>'+
+      '<button class="btn btn-danger btn-sm btn-icon" onclick="delGalleryItem(\''+item.id+'\')">🗑</button>'+
+      '</div></div>'
+    ).join('')+'</div>';
+  }catch(e){toast('Error cargando gallery','err');}
+}
+
+function openGalleryModal(item=null){
+  document.getElementById('gm-title').textContent=item?'Editar Foto':'Agregar Foto a Gallery';
+  document.getElementById('g-id').value=item?.id||'';
+  document.getElementById('g-img').value=item?.image_url||'';
+  document.getElementById('g-service').value=item?.service||'';
+  document.getElementById('g-caption').value=item?.caption||'';
+  // Preview
+  const prev=document.getElementById('g-preview');
+  if(item?.image_url){document.getElementById('g-preview-img').src=item.image_url;prev.style.display='';}
+  else prev.style.display='none';
+  openOv('ov-g');
+  loadQuickMediaForGallery();
+}
+
+function editGalleryItem(item){openGalleryModal(item);}
+
+// Live preview when URL changes
+document.getElementById('g-img')?.addEventListener('input',function(){
+  const val=this.value.trim();
+  const prev=document.getElementById('g-preview');
+  if(val){document.getElementById('g-preview-img').src=val;prev.style.display='';}
+  else prev.style.display='none';
+});
+
+async function saveGalleryItem(e){
+  e.preventDefault();
+  const id=document.getElementById('g-id').value;
+  const d={image_url:document.getElementById('g-img').value.trim(),service:document.getElementById('g-service').value,caption:document.getElementById('g-caption').value.trim()||null,created_at:new Date().toISOString()};
+  try{
+    if(id)await PATCH('eps_gallery',id,d);else await POST('eps_gallery',d);
+    toast(id?'Foto actualizada ✓':'Foto agregada ✓');closeOv('ov-g');loadGallery();loadDashboard();
+  }catch(e){toast('Error: '+e.message,'err');}
+}
+
+async function delGalleryItem(id){
+  if(!confirm('¿Eliminar esta foto del gallery?'))return;
+  try{await DEL('eps_gallery',id);toast('Foto eliminada');loadGallery();loadDashboard();}catch(e){toast('Error','err');}
+}
+
+async function loadQuickMediaForGallery(){
+  const el=document.getElementById('gal-quick');if(!el)return;
+  try{
+    const r=await fetch(SBU+'/storage/v1/object/list/'+BKT,{method:'POST',headers:{...H,'Content-Type':'application/json'},body:JSON.stringify({limit:40,offset:0,sortBy:{column:'created_at',order:'desc'}})});
+    const files=await r.json();
+    const imgs=(files||[]).filter(f=>/\.(jpg|jpeg|png|webp|gif|avif)$/i.test(f.name));
+    if(!imgs.length){el.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:12px;color:var(--text-3);font-size:12px">Sin fotos. Ve a Media y sube imágenes primero.</div>';return;}
+    el.innerHTML=imgs.map(f=>{
+      const url=SBU+'/storage/v1/object/public/'+BKT+'/'+encodeURIComponent(f.name);
+      return '<img src="'+url+'" loading="lazy" onclick="useMediaUrl(\''+url+'\')" style="width:100%;height:64px;object-fit:cover;border-radius:4px;cursor:pointer;border:2px solid transparent;transition:border-color .14s" onmouseover="this.style.borderColor=\'var(--accent)\'" onmouseout="this.style.borderColor=\'transparent\'">';
+    }).join('');
+  }catch(e){el.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:12px;color:var(--text-3);font-size:12px">Error cargando fotos</div>';}
+}
+
+function useMediaUrl(url){
+  document.getElementById('g-img').value=url;
+  document.getElementById('g-preview-img').src=url;
+  document.getElementById('g-preview').style.display='';
+  toast('URL cargada ✓','inf');
+}
+
+// ── MEDIA ──────────────────────────────────────────────
+async function loadMedia(){
+  document.getElementById('mbody').innerHTML='<div class="loading"><span class="spin"></span>Cargando…</div>';
+  try{
+    const r=await fetch(SBU+'/storage/v1/object/list/'+BKT,{method:'POST',headers:{...H,'Content-Type':'application/json'},body:JSON.stringify({limit:200,offset:0,sortBy:{column:'created_at',order:'desc'}})});
+    if(!r.ok)throw new Error();
+    const files=await r.json();
+    if(!files||!files.length){document.getElementById('mbody').innerHTML='<div class="empty"><span class="empty-icon">📸</span><h4>Sin archivos</h4><p>Sube fotos de tus trabajos arriba</p></div>';return;}
+    document.getElementById('mbody').innerHTML='<div class="mgrid">'+files.map(f=>{
+      const url=SBU+'/storage/v1/object/public/'+BKT+'/'+encodeURIComponent(f.name);
+      const isImg=/\.(jpg|jpeg|png|webp|gif|avif)$/i.test(f.name);
+      return '<div class="mitem">'+
+        '<div class="mthumb">'+(isImg?'<img src="'+url+'" loading="lazy" onerror="this.parentElement.innerHTML=\'<span style=font-size:24px>🖼</span>\'">':'<span style="font-size:24px">📄</span>')+'</div>'+
+        '<div class="minfo"><div class="mname" title="'+esc(f.name)+'">'+esc(f.name)+'</div>'+
+        '<div class="mact">'+
+        '<button class="btn btn-green btn-sm" style="flex:1;font-size:10px" onclick="copyURL(\''+url+'\',this)">📋 Copiar</button>'+
+        '<button class="btn btn-danger btn-sm btn-icon" onclick="delMedia(\''+f.name+'\')">🗑</button>'+
+        '</div></div></div>';
+    }).join('')+'</div>';
+  }catch(e){document.getElementById('mbody').innerHTML='<div class="empty"><span class="empty-icon">⚠️</span><h4>Error</h4><p>Verifica que el bucket "gpga-media" existe en Supabase</p></div>';}
+}
+
+function copyURL(url,btn){
+  navigator.clipboard.writeText(url).then(()=>{
+    const orig=btn.textContent;btn.textContent='✅ Copiada!';btn.style.background='rgba(22,163,74,.15)';btn.style.color='var(--green)';
+    setTimeout(()=>{btn.textContent=orig;btn.style.background='';btn.style.color='';},2000);
+    toast('URL copiada','inf');
+  }).catch(()=>toast('No se pudo copiar','err'));
+}
+
+async function uploadFiles(files){
+  const prog=document.getElementById('uprog');
+  for(const file of Array.from(files)){
+    prog.innerHTML='<div class="loading"><span class="spin"></span>Subiendo <strong>'+esc(file.name)+'</strong>…</div>';
+    try{
+      const r=await fetch(SBU+'/storage/v1/object/'+BKT+'/'+encodeURIComponent(file.name),{method:'POST',headers:{'apikey':KEY,'Authorization':'Bearer '+KEY,'Content-Type':file.type},body:file});
+      if(!r.ok)throw new Error(await r.text());
+      const publicUrl=SBU+'/storage/v1/object/public/'+BKT+'/'+encodeURIComponent(file.name);
+      toast(file.name+' subido ✓');
+      prog.innerHTML='<div style="margin-top:12px;background:#f0fdf4;border:1px solid #a7f3d0;border-radius:6px;padding:12px 14px">'+
+        '<div style="font-size:10px;font-weight:700;color:var(--green);margin-bottom:7px;text-transform:uppercase;letter-spacing:.5px">✅ URL pública:</div>'+
+        '<div style="display:flex;gap:8px;align-items:center">'+
+        '<input readonly value="'+publicUrl+'" style="flex:1;background:#fff;border:1px solid var(--border);border-radius:5px;padding:7px 10px;color:var(--text);font-size:11px;font-family:JetBrains Mono,monospace">'+
+        '<button onclick="copyURL(\''+publicUrl+'\',this)" style="background:var(--green);color:#fff;border:none;border-radius:5px;padding:7px 12px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap">📋 Copiar</button>'+
+        '</div></div>';
+    }catch(e){toast('Error: '+e.message,'err');}
+  }
+  loadMedia();
+}
+
+async function delMedia(name){
+  if(!confirm('¿Eliminar "'+name+'"?'))return;
+  try{await fetch(SBU+'/storage/v1/object/'+BKT+'/'+encodeURIComponent(name),{method:'DELETE',headers:H});toast('Eliminado');loadMedia();}
+  catch(e){toast('Error','err');}
+}
+
+const uz=document.getElementById('uzone');
+if(uz){uz.addEventListener('dragover',e=>{e.preventDefault();uz.classList.add('drag');});uz.addEventListener('dragleave',()=>uz.classList.remove('drag'));uz.addEventListener('drop',e=>{e.preventDefault();uz.classList.remove('drag');uploadFiles(e.dataTransfer.files);});}
+
+// ── SETTINGS ──────────────────────────────────────────
+const SKEYS=['hero_video_url','hero_image_url','site_phone','site_email','hero_title','hero_subtitle','about_text'];
+async function loadSettings(){
+  try{const rows=await GET('eps_settings','select=key,value');rows.forEach(r=>{const el=document.getElementById('s-'+r.key);if(el&&r.value)el.value=r.value;});}
+  catch(e){toast('Error cargando settings','err');}
+}
+async function saveSetting(key){
+  const el=document.getElementById('s-'+key);if(!el)return;
+  try{await UPSERT('eps_settings',{key,value:el.value.trim(),updated_at:new Date().toISOString()},'key');
+    localStorage.removeItem('eps_settings_v1');toast('"'+key+'" guardado ✓');}
+  catch(e){toast('Error: '+e.message,'err');}
+}
+async function saveAllSettings(){
+  let ok=0;
+  for(const key of SKEYS){const el=document.getElementById('s-'+key);if(!el)continue;
+    try{await UPSERT('eps_settings',{key,value:el.value.trim(),updated_at:new Date().toISOString()},'key');ok++;}catch(e){}
+  }
+  localStorage.removeItem('eps_settings_v1');
+  toast(ok+' configuraciones guardadas ✓');
+}
+
+// ── UTILS ──────────────────────────────────────────────
+function esc(s){if(!s)return'';return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function fd(iso){if(!iso)return'—';return new Date(iso).toLocaleString('en-US',{month:'short',day:'numeric',year:'numeric',hour:'2-digit',minute:'2-digit'});}
+
+// ── INIT ───────────────────────────────────────────────
+loadDashboard();
+</script>
+</body>
+</html>
