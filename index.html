@@ -464,37 +464,7 @@
 <script>
 function waitForEPS(cb){if(window.EPS){cb(window.EPS);return;}var a=0,t=setInterval(function(){a++;if(window.EPS){clearInterval(t);cb(window.EPS);}else if(a>80)clearInterval(t);},50);}
 
-// Form submissions
-document.querySelectorAll('.eps-form').forEach(function(form){
-  form.addEventListener('submit',async function(e){
-    e.preventDefault();
-    var btn=form.querySelector('[type=submit]');
-    var msg=form.querySelector('.eps-form-msg');
-    var orig=btn.textContent;
-    btn.disabled=true;btn.textContent='Sending…';
-    var SBU='https://cqwvnvcjxbeskvyqrank.supabase.co';
-    var KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNxd3ZudmNqeGJlc2t2eXFyYW5rIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMwMjg5OTMsImV4cCI6MjA4ODYwNDk5M30.pavJBT9fpyoKPH9zbn-9pcUY72gaOB6qL76QMCtFoWw';
-    var data={
-      name:(form.querySelector('[name=name]')||{}).value||null,
-      email:(form.querySelector('[name=email]')||{}).value||null,
-      phone:(form.querySelector('[name=phone]')||{}).value||null,
-      service:(form.querySelector('[name=service]')||{}).value||null,
-      address:(form.querySelector('[name=address]')||{}).value||null,
-      zip:(form.querySelector('[name=zip]')||{}).value||null,
-      message:(form.querySelector('[name=message]')||{}).value||null,
-      source:form.dataset.source||'website'
-    };
-    try{
-      var r=await fetch(SBU+'/rest/v1/eps_leads',{method:'POST',headers:{'apikey':KEY,'Authorization':'Bearer '+KEY,'Content-Type':'application/json','Prefer':'return=minimal'},body:JSON.stringify(data)});
-      if(!r.ok)throw new Error();
-      if(msg){msg.className='eps-form-msg success';msg.textContent='✓ Thank you! We will contact you within 24 hours.';}
-      form.reset();
-    }catch(err){
-      if(msg){msg.className='eps-form-msg error';msg.textContent='Something went wrong. Please call us directly.';}
-    }
-    btn.disabled=false;btn.textContent=orig;
-  });
-});
+
 
 waitForEPS(async function(g){
   // Hero video/bg
