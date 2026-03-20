@@ -2,12 +2,12 @@
 // ESCOBAR PROPERTY SERVICES — THEME ENGINE
 // ═══════════════════════════════════════════════
 (async function EPS_THEME() {
-  const SB_URL = '__SB_URL__';
-  const SB_KEY = '__SB_KEY__';
+  const SB_URL = '__PEGA_TU_SUPABASE_URL_AQUI__';  // ← reemplaza esto
+  const SB_KEY = '__PEGA_TU_SUPABASE_ANON_KEY_AQUI__';  // ← reemplaza esto
   const H = { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY };
 
   const DEFAULTS = {
-    brand_color:   '#1a4fa0',
+    brand_color:   '#2b90c8',
     brand_color_2: '#f26522',
     site_phone:    '678-488-2716',
     site_email:    'info@escobarps.com',
