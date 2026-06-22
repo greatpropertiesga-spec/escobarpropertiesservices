@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="112" fill="#0f2640"/>
+  <text x="256" y="308" font-family="Arial Black,Arial" font-weight="900" font-size="190" text-anchor="middle" fill="#ffffff">EPS</text>
+  <rect x="96" y="348" width="320" height="20" rx="10" fill="#2193bb"/>
+  <text x="256" y="420" font-family="Arial,sans-serif" font-weight="700" font-size="52" text-anchor="middle" fill="#2193bb">ESCOBAR</text>
+</svg>

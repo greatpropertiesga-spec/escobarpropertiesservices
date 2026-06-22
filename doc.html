@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Escobar Property Services — Document</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#e8edf2;font-family:'Helvetica Neue',Arial,sans-serif;min-height:100vh;padding:20px}
+.wrap{max-width:760px;margin:0 auto}
+.action-bar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:20px;flex-wrap:wrap}
+.brand-line{font-size:14px;font-weight:700;color:#0f2640}
+.btn-print{background:linear-gradient(135deg,#f97316,#ea580c);color:#fff;border:none;padding:12px 24px;border-radius:10px;font-size:14px;font-weight:800;cursor:pointer;display:flex;align-items:center;gap:8px;transition:all .15s}
+.btn-print:hover{transform:translateY(-1px);box-shadow:0 4px 14px rgba(249,115,22,.4)}
+.btn-call{background:#fff;color:#0f2640;border:2px solid #e2e8f0;padding:12px 20px;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;text-decoration:none;display:flex;align-items:center;gap:8px;transition:all .15s}
+.btn-call:hover{border-color:#2193bb;color:#2193bb}
+.doc{background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,.15)}
+.error{background:#fff;border-radius:12px;padding:40px;text-align:center}
+.error h2{color:#ef4444;margin-bottom:8px}
+.error p{color:#64748b;font-size:14px}
+.approval-wrap{margin-top:16px;text-align:center}
+.approve-form{display:inline-flex;flex-direction:column;align-items:stretch;gap:10px;width:100%;max-width:360px;text-align:left}
+.approve-label{font-size:13px;font-weight:700;color:#374151}
+.approve-name{padding:12px 14px;border:1.5px solid #e2e8f0;border-radius:8px;font-size:14px;outline:none;transition:border-color .15s;font-family:inherit}
+.approve-name:focus{border-color:#059669}
+.approve-name.err{border-color:#ef4444;background:#fef2f2}
+.btn-approve{background:linear-gradient(135deg,#059669,#047857);color:#fff;border:none;padding:14px 36px;border-radius:10px;font-size:15px;font-weight:800;cursor:pointer;letter-spacing:.3px}
+.btn-approve:disabled{opacity:.55;cursor:default}
+.approval-done{background:#d1fae5;border:1px solid #6ee7b7;border-radius:10px;padding:14px 24px;font-size:14px;font-weight:700;color:#065f46;display:inline-block}
+.approval-already{background:#f1f5f9;border:1px solid #cbd5e1;border-radius:10px;padding:14px 24px;font-size:14px;color:#475569;display:inline-block}
+/* Stripe Pay Now */
+.pay-wrap{margin-top:16px;text-align:center}
+.pay-options{display:flex;flex-direction:column;gap:10px;width:100%;max-width:420px;margin:0 auto}
+.btn-pay-opt{display:flex;align-items:center;justify-content:space-between;width:100%;border:none;border-radius:14px;padding:16px 20px;cursor:pointer;transition:all .16s;text-align:left;box-sizing:border-box}
+.btn-pay-opt:disabled{opacity:.55;cursor:default;transform:none!important}
+.bpo-card{background:linear-gradient(135deg,#059669,#047857);color:#fff;box-shadow:0 4px 16px rgba(5,150,105,.3)}
+.bpo-card:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(5,150,105,.42)}
+.bpo-ach{background:linear-gradient(135deg,#2193bb,#1a78a0);color:#fff;box-shadow:0 4px 16px rgba(33,147,187,.28)}
+.bpo-ach:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(33,147,187,.4)}
+.bpo-left{display:flex;flex-direction:column;gap:3px}
+.bpo-label{font-size:15px;font-weight:800;letter-spacing:.2px}
+.bpo-sub{font-size:11px;opacity:.82;font-weight:500}
+.bpo-right{display:flex;flex-direction:column;align-items:flex-end;gap:2px;flex-shrink:0;margin-left:12px}
+.bpo-amount{font-size:18px;font-weight:900;letter-spacing:-.3px}
+.bpo-tag{font-size:10px;font-weight:700;opacity:.85;text-transform:uppercase;letter-spacing:.6px}
+.pay-note{margin-top:8px;font-size:11px;color:#94a3b8;display:flex;align-items:center;justify-content:center;gap:4px}
+.pay-note svg{flex-shrink:0}
+.pay-success{background:#d1fae5;border:1.5px solid #6ee7b7;border-radius:12px;padding:20px 32px;font-size:15px;font-weight:700;color:#065f46;display:inline-block;margin-top:16px}
+.pay-cancelled{background:#fef3c7;border:1.5px solid #fde68a;border-radius:12px;padding:16px 24px;font-size:14px;font-weight:600;color:#92400e;display:inline-block;margin-top:16px}
+@media print{.action-bar,.approval-wrap,.pay-wrap{display:none!important}body{background:#fff;padding:0}.doc{box-shadow:none;border-radius:0}}
+@media(max-width:600px){body{padding:12px}.action-bar{flex-direction:column;align-items:stretch}.btn-print,.btn-call{justify-content:center}.btn-pay{width:100%;justify-content:center}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="action-bar">
+    <div class="brand-line" style="line-height:0;padding:0">
+      <img src="/images/logo.jpg" height="40" alt="Escobar Property Services" style="display:block;height:40px;width:auto" onerror="this.style.display='none';this.parentElement.innerHTML='<span style=\'font-size:14px;font-weight:900;color:#0f2640\'>Escobar Property Services, LLC</span>'">
+    </div>
+    <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+      <a class="btn-call" href="tel:6784882716">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.8a19.79 19.79 0 01-3.07-8.68A2 2 0 012 .85h3a2 2 0 012 1.72c.13 1 .36 1.97.7 2.91a2 2 0 01-.45 2.11L6.09 8.75a16 16 0 006.29 6.29l1.16-1.16a2 2 0 012.11-.45c.94.34 1.91.57 2.91.7A2 2 0 0122 16.92z"/></svg>
+        678-488-2716
+      </a>
+      <button class="btn-print" onclick="handlePrint()">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+        Print / Save PDF
+      </button>
+    </div>
+  </div>
+  <div class="doc" id="docRoot"></div>
+</div>
+
+<script>
+const _SB_URL  = 'https://lhptdukkqupxmtziinns.supabase.co';
+const _SB_KEY  = 'sb_publishable_4e8u8RxmoE9SILILkFdHQA_neHqGxvO';
+const EST_DEFAULT_TERMS = 'Payment is due upon completion of work. Accepted payment methods: Credit/Debit Card, Zelle, Check, or Cash. This estimate is valid for 30 days from the issue date. Escobar Property Services, LLC reserves the right to adjust pricing if site conditions differ materially from the description provided. All work is warranted against defects in workmanship for 30 days after completion.';
+const INV_DEFAULT_TERMS = 'Payment is due within 7 days of invoice date. Accepted payment methods: Credit/Debit Card (pay online via the button above), Zelle, Check, or Cash. A late fee of 1.5% per month may apply to overdue balances. Thank you for your business — Escobar Property Services, LLC.';
+
+// On mobile (especially Gmail/in-app WebView), window.print() is blocked.
+// Use navigator.share() to open the iOS share sheet → Print → pinch to save PDF.
+function handlePrint() {
+  const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+  if (isMobile && navigator.share) {
+    navigator.share({ url: window.location.href, title: document.title }).catch(() => window.print());
+  } else {
+    window.print();
+  }
+}
+
+function esc(s) {
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function _tc(s) {
+  return String(s||'').replace(/\b\w/g, c => c.toUpperCase());
+}
+function fmtDate(d) {
+  return d ? new Date(d+'T00:00:00').toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'}) : '—';
+}
+function fmtMoney(n) {
+  return '$' + parseFloat(n||0).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+}
+function fmtAddr(a) {
+  if (!a) return '';
+  const s = String(a).trim();
+  const i = s.indexOf(', ');
+  return i === -1 ? esc(s) : esc(s.slice(0, i)) + '<br>' + esc(s.slice(i + 2));
+}
+
+function renderEstimate(d) {
+  const showEstBadge = d.status === 'Accepted';
+  const svcs = Array.isArray(d.services) ? d.services : [];
+  const lineRows = svcs.map(item => {
+    const desc = (item.description || '').trim();
+    const descHtml = desc ? '<div style="margin-top:4px;font-size:12px;color:#94a3b8;line-height:1.5;white-space:pre-wrap;word-break:break-word;overflow-wrap:break-word">'+esc(desc)+'</div>' : '';
+    return '<tr><td style="padding:14px 20px;border-bottom:1px solid #f1f5f9;font-size:14px;color:#374151;vertical-align:top;word-break:break-word;overflow-wrap:break-word">'+esc(item.service||item.s||'')+descHtml+'</td><td style="padding:14px 20px;border-bottom:1px solid #f1f5f9;text-align:right;font-size:14px;font-weight:700;color:#0f2640;white-space:nowrap;vertical-align:top">'+fmtMoney(item.price||item.p||0)+'</td></tr>';
+  }).join('');
+  const total = svcs.reduce((s,i)=>s+(parseFloat(i.price||i.p)||0),0);
+  return `
+  <div style="height:4px;background:#2193bb;border-radius:12px 12px 0 0"></div>
+  <div style="padding:16px 32px 12px;background:#fff;display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px">
+    <div>
+      <img src="/images/logo.jpg" height="26" alt="Escobar Property Services" style="display:block;height:26px;width:auto" onerror="this.style.display='none'">
+      <div style="font-size:12px;font-weight:700;color:#0f2640;margin-top:5px">Escobar Property Services, LLC</div>
+    </div>
+    <div style="text-align:right;flex-shrink:0">
+      <div style="font-size:10px;font-weight:700;color:#2193bb;text-transform:uppercase;letter-spacing:2px;margin-bottom:4px">Estimate</div>
+      <div style="font-size:20px;font-weight:900;color:#0f2640;letter-spacing:-.5px;font-family:monospace">${esc(d.num||d.estimate_number||'')}</div>
+      <div style="margin-top:8px"><span id="estStatusBadge" style="display:${showEstBadge?'inline-block':'none'};padding:3px 12px;border-radius:20px;font-size:11px;font-weight:700;background:#16a34a;color:#fff">Accepted</span></div>
+    </div>
+  </div>
+  <div style="height:1px;background:#e8edf2;margin:0 20px"></div>
+  <div style="padding:20px 32px;display:flex;justify-content:space-between;gap:40px;flex-wrap:wrap">
+    <div style="flex:1;min-width:180px">
+      <div style="font-size:10px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:1.2px;margin-bottom:8px">Prepared For</div>
+      <div style="font-size:16px;font-weight:700;color:#0f2640;margin-bottom:3px">${esc(_tc(d.client_name||d.cn||'—'))}</div>
+      ${(d.client_address||d.ca)?'<div style="font-size:13px;color:#64748b;margin-top:2px">'+fmtAddr(d.client_address||d.ca)+'</div>':''}
+      ${(d.client_phone||d.cp)?'<div style="font-size:13px;color:#64748b;margin-top:2px">'+esc(d.client_phone||d.cp)+'</div>':''}
+      ${(d.client_email||d.ce)?'<div style="font-size:13px;color:#64748b">'+esc(d.client_email||d.ce)+'</div>':''}
+    </div>
+    <div style="text-align:right;flex-shrink:0">
+      <div style="font-size:10px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:1.2px;margin-bottom:8px">Details</div>
+      <div style="font-size:13px;color:#374151;margin-bottom:3px"><span style="color:#94a3b8">Issued &nbsp;</span>${fmtDate(d.estimate_date||d.dt)}</div>
+      <div style="font-size:13px;color:#374151"><span style="color:#94a3b8">Expires</span> ${fmtDate(d.expiration_date||d.ex)}</div>
+    </div>
+  </div>
+  <div style="height:1px;background:#e8edf2"></div>
+  <table style="width:100%;border-collapse:collapse;table-layout:fixed">
+    <thead><tr>
+      <th style="padding:10px 20px;text-align:left;font-size:10px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.8px;border-bottom:1px solid #e8edf2;background:#fff;width:72%">Service</th>
+      <th style="padding:10px 20px;text-align:right;font-size:10px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.8px;border-bottom:1px solid #e8edf2;background:#fff;width:28%">Price</th>
+    </tr></thead>
+    <tbody>${lineRows||'<tr><td colspan="2" style="padding:20px;color:#94a3b8;font-size:13px">No services listed.</td></tr>'}</tbody>
+  </table>
+  <div style="padding:16px 32px;display:flex;justify-content:flex-end;align-items:center;gap:24px;border-top:2px solid #e8edf2">
+    <span style="font-size:12px;font-weight:600;color:#64748b;text-transform:uppercase;letter-spacing:.8px">Total</span>
+    <span style="font-size:28px;font-weight:900;color:#0f2640">${fmtMoney(total)}</span>
+  </div>
+  ${(d.notes||d.nt)?'<div style="height:1px;background:#e8edf2"></div><div style="padding:18px 32px;font-size:13px;color:#64748b;line-height:1.75"><div style="font-size:10px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:1.2px;margin-bottom:8px">Notes</div>'+esc(d.notes||d.nt).replace(/\n/g,'<br>')+'</div>':''}
+  <div style="height:1px;background:#e8edf2"></div>
+  <div style="padding:18px 32px;font-size:12px;color:#64748b;line-height:1.75"><div style="font-size:10px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:1.2px;margin-bottom:8px">Terms &amp; Conditions</div>${esc(d.terms||EST_DEFAULT_TERMS).replace(/\n/g,'<br>')}</div>
+  <div style="height:1px;background:#e8edf2"></div>
+  <div style="padding:14px 32px;border-radius:0 0 12px 12px;background:#fff;text-align:center;font-size:11px;color:#94a3b8">
+    Escobar Property Services, LLC &nbsp;·&nbsp; 678-488-2716 &nbsp;·&nbsp; escobarpropertyservices.com
+  </div>`;
+}
+
+function renderInvoice(d) {
+  const showInvBadge = d.status === 'Paid' || d.status === 'Overdue';
+  const invStatusBg  = d.status === 'Paid' ? '#16a34a' : '#dc2626';
+  const svcs = Array.isArray(d.services) ? d.services : [];
+  const lineRows = svcs.map(item => {
+    const desc = (item.description || '').trim();
+    const descHtml = desc ? '<div style="margin-top:4px;font-size:12px;color:#94a3b8;line-height:1.5;white-space:pre-wrap;word-break:break-word;overflow-wrap:break-word">'+esc(desc)+'</div>' : '';
+    return '<tr><td style="padding:14px 20px;border-bottom:1px solid #f1f5f9;font-size:14px;color:#374151;vertical-align:top;word-break:break-word;overflow-wrap:break-word">'+esc(item.service||item.s||'')+descHtml+'</td><td style="padding:14px 20px;border-bottom:1px solid #f1f5f9;text-align:right;font-size:14px;font-weight:700;color:#0f2640;white-space:nowrap;vertical-align:top">'+fmtMoney(item.price||item.p||0)+'</td></tr>';
+  }).join('');
+  const total = parseFloat(d.total||0);
+  const pay   = d.payment_method || d.pm || '';
+  return `
+  <div style="height:4px;background:#2193bb;border-radius:12px 12px 0 0"></div>
+  <div style="padding:16px 32px 12px;background:#fff;display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px">
+    <div>
+      <img src="/images/logo.jpg" height="26" alt="Escobar Property Services" style="display:block;height:26px;width:auto" onerror="this.style.display='none'">
+      <div style="font-size:12px;font-weight:700;color:#0f2640;margin-top:5px">Escobar Property Services, LLC</div>
+      <div style="margin-top:4px;font-size:11px;color:#94a3b8;line-height:1.6">4024 Lawrenceville Hwy Ste 17-142<br>Lilburn, GA 30047<br>678-488-2716<br>info@escobarps.com</div>
+    </div>
+    <div style="text-align:right;flex-shrink:0">
+      <div style="font-size:10px;font-weight:700;color:#2193bb;text-transform:uppercase;letter-spacing:2px;margin-bottom:4px">Invoice</div>
+      <div style="font-size:20px;font-weight:900;color:#0f2640;letter-spacing:-.5px;font-family:monospace">${esc(d.invoice_number||d.num||'')}</div>
+      <div style="margin-top:8px"><span style="display:${showInvBadge?'inline-block':'none'};padding:3px 12px;border-radius:20px;font-size:11px;font-weight:700;background:${invStatusBg};color:#fff">${esc(d.status)}</span></div>
+    </div>
+  </div>
+  <div style="height:1px;background:#e8edf2;margin:0 20px"></div>
+  <div style="padding:20px 32px;display:flex;justify-content:space-between;gap:40px;flex-wrap:wrap">
+    <div style="flex:1;min-width:180px">
+      <div style="font-size:10px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:1.2px;margin-bottom:8px">Bill To</div>
+      <div style="font-size:16px;font-weight:700;color:#0f2640;margin-bottom:3px">${esc(_tc(d.client_name||d.cn||'—'))}</div>
+      ${(d.client_address||d.ca)?'<div style="font-size:13px;color:#64748b;margin-top:2px">'+fmtAddr(d.client_address||d.ca)+'</div>':''}
+      ${(d.client_phone||d.cp)?'<div style="font-size:13px;color:#64748b;margin-top:2px">'+esc(d.client_phone||d.cp)+'</div>':''}
+      ${(d.client_email||d.ce)?'<div style="font-size:13px;color:#64748b">'+esc(d.client_email||d.ce)+'</div>':''}
+    </div>
+    <div style="text-align:right;flex-shrink:0">
+      <div style="font-size:10px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:1.2px;margin-bottom:8px">Details</div>
+      <div style="font-size:13px;color:#374151;margin-bottom:3px"><span style="color:#94a3b8">Invoice Date &nbsp;</span>${fmtDate(d.invoice_date||d.dt)}</div>
+      ${(d.service_date||d.sd)?'<div style="font-size:13px;color:#374151;margin-bottom:3px"><span style="color:#94a3b8">Service Date &nbsp;</span>'+fmtDate(d.service_date||d.sd)+'</div>':''}
+      <div style="font-size:13px;font-weight:600;color:#dc2626"><span style="color:#94a3b8;font-weight:400">Due &nbsp;</span>${fmtDate(d.due_date||d.due)}</div>
+      ${pay?'<div style="font-size:13px;color:#374151;margin-top:3px"><span style="color:#94a3b8">Payment &nbsp;</span>'+esc(pay)+'</div>':''}
+    </div>
+  </div>
+  <div style="height:1px;background:#e8edf2"></div>
+  <table style="width:100%;border-collapse:collapse;table-layout:fixed">
+    <thead><tr>
+      <th style="padding:10px 20px;text-align:left;font-size:10px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.8px;border-bottom:1px solid #e8edf2;background:#fff;width:72%">Service</th>
+      <th style="padding:10px 20px;text-align:right;font-size:10px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.8px;border-bottom:1px solid #e8edf2;background:#fff;width:28%">Amount</th>
+    </tr></thead>
+    <tbody>${lineRows||'<tr><td colspan="2" style="padding:20px;color:#94a3b8;font-size:13px">No services listed.</td></tr>'}</tbody>
+  </table>
+  <div style="padding:16px 32px;display:flex;justify-content:flex-end;align-items:center;gap:24px;border-top:2px solid #e8edf2">
+    <span style="font-size:12px;font-weight:600;color:#64748b;text-transform:uppercase;letter-spacing:.8px">Total Due</span>
+    <span style="font-size:28px;font-weight:900;color:#0f2640">${fmtMoney(total)}</span>
+  </div>
+  ${(d.notes||d.nt)?'<div style="height:1px;background:#e8edf2"></div><div style="padding:18px 32px;font-size:13px;color:#64748b;line-height:1.75"><div style="font-size:10px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:1.2px;margin-bottom:8px">Notes</div>'+esc(d.notes||d.nt).replace(/\n/g,'<br>')+'</div>':''}
+  <div style="height:1px;background:#e8edf2"></div>
+  <div style="padding:18px 32px;font-size:12px;color:#64748b;line-height:1.75"><div style="font-size:10px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:1.2px;margin-bottom:8px">Terms &amp; Conditions</div>${esc(d.terms||INV_DEFAULT_TERMS).replace(/\n/g,'<br>')}</div>
+  <div style="height:1px;background:#e8edf2"></div>
+  <div style="padding:16px 32px 20px;background:#f8fafc;border-radius:0 0 12px 12px;display:flex;flex-direction:column;align-items:center;gap:10px">
+    <div style="display:flex;align-items:center;gap:7px;flex-wrap:wrap;justify-content:center">
+      <svg width="44" height="28" viewBox="0 0 44 28" style="border-radius:4px;border:1px solid #e2e8f0"><rect width="44" height="28" fill="#1A1F71" rx="4"/><text x="22" y="19" text-anchor="middle" font-family="Arial,sans-serif" font-size="12" font-weight="900" fill="#fff">VISA</text></svg>
+      <svg width="44" height="28" viewBox="0 0 44 28" style="border-radius:4px;border:1px solid #e2e8f0"><rect width="44" height="28" fill="#fff" rx="4"/><circle cx="17" cy="14" r="8" fill="#EB001B"/><circle cx="27" cy="14" r="8" fill="#F79E1B"/><path d="M22 7.54a8 8 0 010 12.92A8 8 0 0122 7.54z" fill="#FF5F00"/></svg>
+      <svg width="44" height="28" viewBox="0 0 44 28" style="border-radius:4px;border:1px solid #e2e8f0"><rect width="44" height="28" fill="#2557D6" rx="4"/><text x="22" y="19" text-anchor="middle" font-family="Arial,sans-serif" font-size="9" font-weight="900" fill="#fff" letter-spacing="0.5">AMEX</text></svg>
+      <svg width="54" height="28" viewBox="0 0 54 28" style="border-radius:4px;border:1px solid #e2e8f0"><rect width="54" height="28" fill="#000" rx="4"/><text x="27" y="19" text-anchor="middle" font-family="-apple-system,Arial,sans-serif" font-size="9" font-weight="600" fill="#fff" letter-spacing="0.3">Apple Pay</text></svg>
+      <svg width="60" height="28" viewBox="0 0 60 28" style="border-radius:4px;border:1px solid #e2e8f0"><rect width="60" height="28" fill="#fff" rx="4"/><text x="30" y="19" text-anchor="middle" font-family="Arial,sans-serif" font-size="9" font-weight="700" fill="#3c4043" letter-spacing="0.3">Google Pay</text></svg>
+      <svg width="46" height="28" viewBox="0 0 46 28" style="border-radius:4px;border:1px solid #e2e8f0"><rect width="46" height="28" fill="#6D1ED4" rx="4"/><text x="23" y="19" text-anchor="middle" font-family="Arial,sans-serif" font-size="12" font-weight="900" fill="#fff">Zelle</text></svg>
+    </div>
+    <div style="display:flex;align-items:center;gap:5px;font-size:10px;color:#94a3b8">
+      <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      Payments secured by Stripe &nbsp;·&nbsp; 256-bit SSL encryption &nbsp;·&nbsp; Escobar Property Services, LLC
+    </div>
+  </div>`;
+}
+
+function _showApprovedBadge() {
+  const badge = document.getElementById('estStatusBadge');
+  if (badge) { badge.textContent = 'Accepted'; badge.style.background = '#16a34a'; badge.style.display = 'inline-block'; }
+}
+
+function _setApprovalWrap(html) {
+  const wrap = document.querySelector('.approval-wrap');
+  if (wrap) {
+    wrap.innerHTML = html;
+    wrap.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    return;
+  }
+  // Fallback: re-attach if somehow removed
+  const outer = document.querySelector('.wrap');
+  if (outer) {
+    const div = document.createElement('div');
+    div.className = 'approval-wrap';
+    div.innerHTML = html;
+    outer.appendChild(div);
+    div.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+}
+
+async function initApproval(estId, leadId, expiryDate) {
+  console.log('[EPS] initApproval — estimate_id:', estId, 'lead_id:', leadId);
+  const wrap = document.createElement('div');
+  wrap.className = 'approval-wrap';
+  wrap.innerHTML = '<span style="color:#94a3b8;font-size:13px">Checking approval status…</span>';
+  document.querySelector('.wrap').appendChild(wrap);
+
+  try {
+    const res  = await fetch(
+      _SB_URL + '/functions/v1/approve-estimate?id=' + encodeURIComponent(estId),
+      { headers: { 'apikey': _SB_KEY, 'Authorization': 'Bearer ' + _SB_KEY } }
+    );
+    if (!res.ok) throw new Error('status check failed: ' + res.status);
+    const est = await res.json();
+    console.log('[EPS] initApproval status check:', est);
+    const isApproved = est && est.approved;
+    if (isApproved) {
+      const dt = est.approved_at ? new Date(est.approved_at).toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'}) : '';
+      const by = est.approved_by && est.approved_by !== 'customer' ? ' by ' + est.approved_by : '';
+      wrap.innerHTML = '<span class="approval-already">✅ Estimate already approved' + by + (dt ? ' on ' + dt : '') + '</span>';
+      _showApprovedBadge();
+    } else {
+      const expLine = expiryDate
+        ? '<div style="font-size:12px;font-weight:700;color:#d97706;margin-bottom:2px">⏱ Estimate Expires: ' + fmtDate(expiryDate) + '</div>'
+        : '<div style="font-size:12px;color:#94a3b8;margin-bottom:2px">Valid for 30 days from issue date</div>';
+      wrap.innerHTML =
+        '<div class="approve-form">' +
+          '<label class="approve-label" for="approverName">Your Name <span style="color:#ef4444">*</span></label>' +
+          '<input class="approve-name" id="approverName" type="text" placeholder="Enter your full name" maxlength="80" autocomplete="name" oninput="this.classList.remove(\'err\')">' +
+          expLine +
+          '<button class="btn-approve" id="btnApprove" onclick="approveEstimate(\'' + esc(estId) + '\',\'' + esc(leadId||'') + '\')">✓ Approve Estimate</button>' +
+        '</div>';
+    }
+  } catch(e) {
+    console.error('[EPS] initApproval error:', e);
+    wrap.remove();
+  }
+}
+
+async function approveEstimate(estId, leadId) {
+  console.log('[EPS] approveEstimate called — estimate_id:', estId, 'lead_id:', leadId);
+  var nameEl = document.getElementById('approverName');
+  var approverName = nameEl ? nameEl.value.trim() : '';
+  if (!approverName) {
+    if (nameEl) { nameEl.classList.add('err'); nameEl.focus(); }
+    return;
+  }
+  var btn = document.getElementById('btnApprove');
+  if (!btn || btn.disabled) return;
+  btn.disabled = true;
+  btn.textContent = 'Processing…';
+
+  try {
+    // Duplicate guard: re-fetch current status via edge function
+    var chk = await fetch(
+      _SB_URL + '/functions/v1/approve-estimate?id=' + encodeURIComponent(estId),
+      { headers: { 'apikey': _SB_KEY, 'Authorization': 'Bearer ' + _SB_KEY } }
+    );
+    if (!chk.ok) throw new Error('pre-check failed: ' + chk.status);
+    var est = await chk.json();
+    console.log('[EPS] pre-check result:', JSON.stringify(est));
+
+    if (est && est.approved) {
+      _setApprovalWrap('<span class="approval-already">This estimate has already been approved.</span>');
+      _showApprovedBadge();
+      return;
+    }
+
+    var resolvedLead = leadId || null;
+    var payload = JSON.stringify({ estimate_id: estId, lead_id: resolvedLead, approved_by: approverName });
+    console.log('[EPS] calling edge function — payload:', payload);
+
+    // Route through edge function which uses service role key to bypass RLS
+    var res = await fetch(
+      _SB_URL + '/functions/v1/approve-estimate',
+      {
+        method:  'POST',
+        headers: {
+          'apikey':        _SB_KEY,
+          'Authorization': 'Bearer ' + _SB_KEY,
+          'Content-Type':  'application/json'
+        },
+        body: payload
+      }
+    );
+    console.log('[EPS] edge function HTTP status:', res.status);
+    var result = await res.json();
+    console.log('[EPS] edge function response:', JSON.stringify(result));
+
+    if (!res.ok) {
+      var msg = (result && result.message) || (result && result.error) || ('HTTP ' + res.status);
+      throw new Error('edge function error: ' + msg);
+    }
+    if (!result.ok && !result.already_approved) {
+      throw new Error('Server did not confirm approval: ' + JSON.stringify(result));
+    }
+
+    if (result.already_approved) {
+      _setApprovalWrap('<span class="approval-already">This estimate has already been approved.</span>');
+    } else {
+      _setApprovalWrap('<span class="approval-done">✅ Estimate approved! We\'ll be in touch shortly to schedule your service.</span>');
+    }
+    _showApprovedBadge();
+
+  } catch(e) {
+    console.error('[EPS] approveEstimate error:', e);
+    var btn2 = document.getElementById('btnApprove');
+    if (btn2) { btn2.disabled = false; btn2.textContent = '✓ Approve Estimate'; }
+    alert('Could not submit approval. Please call us at 678-488-2716.');
+  }
+}
+
+async function initPayment(invoiceId, invoiceStatus, invoiceTotal) {
+  const outer = document.querySelector('.wrap');
+  if (!outer) return;
+
+  const params = new URLSearchParams(window.location.search);
+  const wrap = document.createElement('div');
+  wrap.className = 'pay-wrap';
+
+  // ?paid=1 → just came back from successful Stripe checkout
+  if (params.get('paid') === '1' || invoiceStatus === 'Paid') {
+    wrap.innerHTML = '<span class="pay-success">💳 Payment received — thank you! A receipt has been sent to your email.</span>';
+    outer.appendChild(wrap);
+    return;
+  }
+
+  // ?cancelled=1 → came back from cancelled Stripe checkout
+  if (params.get('cancelled') === '1') {
+    wrap.innerHTML = '<span class="pay-cancelled">Payment was cancelled. You can try again below or call 678-488-2716.</span>';
+    outer.appendChild(wrap);
+    // Fall through — still show the Pay Now button
+  }
+
+  // Show payment options — always two buttons: card (2.99% fee) and bank (free)
+  const total     = parseFloat(invoiceTotal || 0);
+  const fmtUSD    = n => '$' + n.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2});
+  const fee       = Math.round(total * 0.0299 * 100) / 100;
+  const cardTotal = Math.round((total + fee) * 100) / 100;
+
+  const btnWrap = document.createElement('div');
+  btnWrap.className = 'pay-wrap';
+  btnWrap.innerHTML = `
+    <div class="pay-options">
+      <button class="btn-pay-opt bpo-card" id="btnPayCard" onclick="startPayment('${invoiceId}','card')">
+        <div class="bpo-left">
+          <div class="bpo-label">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="vertical-align:middle;margin-right:5px;margin-bottom:2px"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>Pay with Card
+          </div>
+          <div class="bpo-sub">Visa · Mastercard · Amex · Apple Pay · Google Pay</div>
+          <div class="bpo-sub" style="margin-top:2px;opacity:.75">Includes 2.99% processing fee</div>
+        </div>
+        <div class="bpo-right">
+          <div class="bpo-amount">${fmtUSD(cardTotal)}</div>
+          <div class="bpo-tag">+${fmtUSD(fee)} fee</div>
+        </div>
+      </button>
+      <button class="btn-pay-opt bpo-ach" id="btnPayACH" onclick="startPayment('${invoiceId}','ach')">
+        <div class="bpo-left">
+          <div class="bpo-label">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="vertical-align:middle;margin-right:5px;margin-bottom:2px"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>Pay with Bank Account
+          </div>
+          <div class="bpo-sub">Direct transfer from checking or savings</div>
+          <div class="bpo-sub" style="margin-top:2px;opacity:.75">No processing fee</div>
+        </div>
+        <div class="bpo-right">
+          <div class="bpo-amount">${fmtUSD(total)}</div>
+          <div class="bpo-tag" style="color:#7dd3fc">FREE</div>
+        </div>
+      </button>
+      <div class="pay-note">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        Payments secured by Stripe · 256-bit SSL encryption · Escobar Property Services, LLC
+      </div>
+    </div>`;
+  outer.appendChild(btnWrap);
+}
+
+async function startPayment(invoiceId, paymentType) {
+  const btnId = paymentType === 'ach' ? 'btnPayACH' : 'btnPayCard';
+  const btn = document.getElementById(btnId);
+  if (!btn || btn.disabled) return;
+  ['btnPayNow','btnPayCard','btnPayACH'].forEach(id => { const el=document.getElementById(id); if(el) el.disabled=true; });
+  btn.innerHTML = '<span>Redirecting to checkout…</span>';
+
+  try {
+    const res = await fetch(
+      _SB_URL + '/functions/v1/stripe-checkout',
+      {
+        method:  'POST',
+        headers: { 'apikey': _SB_KEY, 'Authorization': 'Bearer ' + _SB_KEY, 'Content-Type': 'application/json' },
+        body:    JSON.stringify({ invoice_id: invoiceId, payment_type: paymentType || 'card' }),
+      }
+    );
+    const data = await res.json();
+    if (data.already_paid) {
+      btn.closest('.pay-wrap').innerHTML = '<span class="pay-success">💳 This invoice has already been paid. Thank you!</span>';
+      return;
+    }
+    if (!data.url) throw new Error(data.error || 'No checkout URL returned.');
+    window.location.href = data.url;
+  } catch(e) {
+    btn.disabled = false;
+    btn.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg> Pay Now';
+    alert('Could not start payment: ' + (e.message || e) + '\n\nPlease call 678-488-2716.');
+  }
+}
+
+
+function fixMobileTables(container) {
+  if (window.innerWidth > 768) return;
+  setTimeout(function() {
+    var w = container.clientWidth || window.innerWidth;
+    if (w > 0) container.querySelectorAll('table').forEach(function(t) {
+      t.style.setProperty('width', w + 'px', 'important');
+      t.style.setProperty('table-layout', 'fixed', 'important');
+    });
+  }, 50);
+}
+
+// Decode and render
+(async function() {
+  const root = document.getElementById('docRoot');
+  let raw;
+  try {
+    // Short-link path: /e/<estimate_number> or /i/<invoice_number>
+    const pathMatch = window.location.pathname.match(/^\/(e|i)\/(.+)$/);
+    if (pathMatch) {
+      const isEst  = pathMatch[1] === 'e';
+      const slug   = decodeURIComponent(pathMatch[2]);
+      console.log('[EPS doc] short link — type:', isEst ? 'estimate' : 'invoice', '| slug:', slug);
+      const res  = await fetch(
+        _SB_URL + '/functions/v1/get-document',
+        {
+          method:  'POST',
+          headers: { 'apikey': _SB_KEY, 'Authorization': 'Bearer ' + _SB_KEY, 'Content-Type': 'application/json' },
+          body:    JSON.stringify({ type: isEst ? 'estimate' : 'invoice', number: slug, track_view: true })
+        }
+      );
+      console.log('[EPS doc] get-document status:', res.status);
+      if (!res.ok) throw new Error('Document not found');
+      const data = await res.json();
+      if (data.error) throw new Error(data.error);
+      data.type = isEst ? 'estimate' : 'invoice';
+      if (isEst) {
+        document.title = 'Estimate ' + (data.estimate_number || '') + ' — Escobar Property Services';
+        root.innerHTML = renderEstimate(data);
+        fixMobileTables(root);
+        if (data.id) { initApproval(data.id, data.lead_id || null, data.expiration_date || data.ex || null); }
+      } else {
+        document.title = 'Invoice ' + (data.invoice_number || '') + ' — Escobar Property Services';
+        root.innerHTML = renderInvoice(data);
+        fixMobileTables(root);
+        if (data.id) { initPayment(data.id, data.status, data.total); }
+      }
+      return;
+    }
+
+    // Legacy ?d= payload link
+    const params = new URLSearchParams(window.location.search);
+    raw = params.get('d');
+    console.log('[EPS doc] URL param d present:', !!raw, '| length:', raw ? raw.length : 0);
+    if (!raw) throw new Error('No document data in URL.');
+    // URLSearchParams.get() already decodes percent-encoding once — do NOT call decodeURIComponent again
+    const data = JSON.parse(raw);
+    console.log('[EPS doc] parsed type:', data.type || data.t, '| estimate_id:', data.id || '(none)', '| lead_id:', data.lead_id || '(none)');
+    const type = data.type || data.t;
+    if (type === 'estimate' || type === 'est') {
+      document.title = 'Estimate ' + (data.num || data.estimate_number || '') + ' — Escobar Property Services';
+      root.innerHTML = renderEstimate(data);
+      fixMobileTables(root);
+      if (data.id) initApproval(data.id, data.lead_id || null, data.expiration_date || data.ex || null);
+    } else if (type === 'invoice' || type === 'inv') {
+      document.title = 'Invoice ' + (data.invoice_number || data.num || '') + ' — Escobar Property Services';
+      root.innerHTML = renderInvoice(data);
+      fixMobileTables(root);
+      if (data.id) initPayment(data.id, data.status, data.total);
+    } else {
+      throw new Error('Unknown document type: ' + type);
+    }
+  } catch(e) {
+    console.error('[EPS doc] render error:', e, '| raw param length:', raw ? raw.length : 0);
+    // Redirect to client portal home instead of showing a dead-end error page
+    root.innerHTML = '<div class="error"><h2>Document Not Found</h2><p>Redirecting you to the Client Portal&hellip;</p></div>';
+    setTimeout(function() { window.location.replace('/portal'); }, 1800);
+  }
+})();
+</script>
+<script>
+/* SW cleanup — removes any orphaned CRM service worker from public scope */
+if('serviceWorker'in navigator){navigator.serviceWorker.getRegistrations().then(function(r){r.forEach(function(w){w.unregister();});})}
+</script>
+</body>
+</html>

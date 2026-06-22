@@ -1,0 +1,12 @@
+User-agent: *
+Allow: /
+
+Disallow: /admin-crm.html
+Disallow: /admin-crm-v2.html
+Disallow: /doc.html
+Disallow: /index-deploy.html
+Disallow: /sms-terms.html
+Disallow: /supabase/
+Disallow: /backups/
+
+Sitemap: https://escobarpropertyservices.com/sitemap.xml

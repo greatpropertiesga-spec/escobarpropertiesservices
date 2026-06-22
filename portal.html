@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Client Portal — Escobar Property Services</title>
+<meta name="description" content="View invoices, approve estimates, and pay securely with Escobar Property Services.">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#0f2640">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:'Helvetica Neue',Arial,sans-serif;
+  background:#eaeff5;
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+}
+
+/* ── HEADER ── */
+.ph{
+  background:#0f2640;
+  padding:14px 24px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  position:sticky;top:0;z-index:10;
+}
+.ph-left{display:flex;align-items:center;gap:12px}
+.ph-logo{height:32px;width:auto;display:block}
+.ph-brand{
+  color:#fff;font-size:13px;font-weight:700;
+  display:flex;flex-direction:column;gap:1px;
+}
+.ph-brand-main{font-size:14px;font-weight:900;letter-spacing:-.2px}
+.ph-brand-sub{font-size:10px;font-weight:600;opacity:.55;text-transform:uppercase;letter-spacing:.8px}
+.ph-secure{
+  display:flex;align-items:center;gap:4px;
+  color:rgba(255,255,255,.45);font-size:11px;font-weight:600;
+}
+.ph-secure-dot{width:6px;height:6px;background:#22c55e;border-radius:50%;flex-shrink:0}
+
+/* ── MAIN ── */
+.pm{
+  flex:1;
+  display:flex;
+  align-items:flex-start;
+  justify-content:center;
+  padding:36px 16px 80px;
+}
+
+/* ── CARD ── */
+.pc{
+  width:100%;
+  max-width:520px;
+}
+
+/* Hero */
+.pc-hero{
+  background:linear-gradient(145deg,#0f2640 0%,#193554 60%,#1e4068 100%);
+  border-radius:18px 18px 0 0;
+  padding:44px 36px 40px;
+  text-align:center;
+  position:relative;
+  overflow:hidden;
+}
+.pc-hero::before{
+  content:'';position:absolute;top:-60px;right:-60px;
+  width:220px;height:220px;
+  background:radial-gradient(circle,rgba(33,147,187,.18) 0%,transparent 70%);
+  border-radius:50%;pointer-events:none;
+}
+.pc-hero::after{
+  content:'';position:absolute;bottom:-40px;left:-40px;
+  width:160px;height:160px;
+  background:radial-gradient(circle,rgba(33,147,187,.12) 0%,transparent 70%);
+  border-radius:50%;pointer-events:none;
+}
+.pc-hero-logo-wrap{
+  width:80px;height:80px;
+  background:#fff;
+  border-radius:18px;
+  display:flex;align-items:center;justify-content:center;
+  margin:0 auto 20px;
+  box-shadow:0 4px 24px rgba(0,0,0,.22);
+  position:relative;z-index:1;
+  overflow:hidden;
+}
+.pc-hero-logo{
+  width:68px;height:68px;
+  object-fit:contain;
+  display:block;
+}
+.pc-hero-name{color:#fff;font-size:24px;font-weight:900;letter-spacing:-.4px;margin-bottom:5px;position:relative;z-index:1}
+.pc-hero-sub{color:rgba(255,255,255,.58);font-size:13px;font-weight:500;position:relative;z-index:1}
+.pc-hero-badge{
+  display:inline-flex;align-items:center;gap:6px;
+  background:rgba(34,197,94,.15);border:1px solid rgba(34,197,94,.3);
+  color:#86efac;font-size:11px;font-weight:700;
+  padding:6px 14px;border-radius:20px;
+  margin-top:18px;letter-spacing:.5px;text-transform:uppercase;
+  position:relative;z-index:1;
+}
+.pc-hero-badge-dot{width:5px;height:5px;background:#22c55e;border-radius:50%;flex-shrink:0}
+
+/* Body */
+.pc-body{
+  background:#fff;
+  border-radius:0 0 18px 18px;
+  padding:32px 32px 36px;
+  box-shadow:0 8px 40px rgba(15,38,64,.12);
+}
+
+/* Section title */
+.sec-label{
+  font-size:11px;font-weight:800;color:#0f2640;
+  text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px;
+}
+.sec-hint{font-size:13px;color:#64748b;margin-bottom:16px;line-height:1.5}
+
+/* Search */
+.search-wrap{display:flex;gap:8px}
+.search-input{
+  flex:1;padding:14px 16px;
+  border:1.5px solid #e2e8f0;border-radius:11px;
+  font-size:15px;font-family:inherit;
+  color:#0f2640;outline:none;
+  transition:border-color .15s,box-shadow .15s;
+  -webkit-text-size-adjust:none;
+  text-transform:uppercase;
+  letter-spacing:.3px;
+}
+.search-input:focus{border-color:#2193bb;box-shadow:0 0 0 3px rgba(33,147,187,.13)}
+.search-input::placeholder{color:#94a3b8;text-transform:none;letter-spacing:0;font-size:14px}
+.btn-search{
+  background:linear-gradient(135deg,#2193bb,#1a78a0);
+  color:#fff;border:none;border-radius:11px;
+  padding:14px 22px;font-size:14px;font-weight:800;
+  cursor:pointer;white-space:nowrap;
+  transition:all .15s;flex-shrink:0;
+  letter-spacing:.2px;
+}
+.btn-search:hover{box-shadow:0 4px 18px rgba(33,147,187,.38);transform:translateY(-1px)}
+.btn-search:active{transform:none;box-shadow:none}
+.btn-search:disabled{opacity:.6;cursor:default;transform:none;box-shadow:none}
+
+/* Message */
+.search-msg{
+  margin-top:12px;border-radius:10px;
+  padding:12px 14px;font-size:13px;font-weight:600;
+  display:none;line-height:1.5;
+}
+.search-msg.error{background:#fef2f2;border:1px solid #fecaca;color:#b91c1c;display:block}
+.search-msg.loading{background:#f0f9ff;border:1px solid #bae6fd;color:#0369a1;display:flex;align-items:center;gap:8px}
+.search-msg.success{background:#f0fdf4;border:1px solid #bbf7d0;color:#15803d;display:block}
+.spinner{
+  width:14px;height:14px;flex-shrink:0;
+  border:2.5px solid #bae6fd;border-top-color:#2193bb;
+  border-radius:50%;animation:spin .7s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* Divider */
+.divider{
+  display:flex;align-items:center;gap:12px;
+  margin:28px 0 24px;
+}
+.divider-line{flex:1;height:1px;background:#f1f5f9}
+.divider-text{font-size:11px;color:#94a3b8;font-weight:700;text-transform:uppercase;letter-spacing:.8px;white-space:nowrap}
+
+/* Quick actions */
+.qa-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.qa-btn{
+  display:flex;flex-direction:column;align-items:flex-start;gap:5px;
+  background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:13px;
+  padding:16px 14px;cursor:pointer;transition:all .15s;
+  text-align:left;-webkit-tap-highlight-color:transparent;
+}
+.qa-btn:hover,.qa-btn:active{
+  background:#f0f7ff;border-color:#2193bb;
+  transform:translateY(-1px);
+  box-shadow:0 4px 16px rgba(33,147,187,.12);
+}
+.qa-icon{font-size:22px;line-height:1}
+.qa-title{font-size:13px;font-weight:800;color:#0f2640;line-height:1.2}
+.qa-sub{font-size:11px;color:#64748b;font-weight:500;line-height:1.35}
+
+/* Help strip */
+.help-strip{
+  margin-top:28px;
+  background:#f8fafc;border:1px solid #f1f5f9;
+  border-radius:12px;padding:16px 18px;
+  display:flex;align-items:center;gap:14px;
+}
+.help-icon{font-size:24px;flex-shrink:0}
+.help-body{}
+.help-title{font-size:13px;font-weight:800;color:#0f2640;margin-bottom:2px}
+.help-sub{font-size:12px;color:#64748b;line-height:1.5}
+.help-links{display:flex;gap:14px;margin-top:6px;flex-wrap:wrap}
+.help-link{
+  font-size:12px;font-weight:700;color:#2193bb;
+  text-decoration:none;display:flex;align-items:center;gap:4px;
+}
+.help-link:hover{color:#0f2640}
+
+/* ── FOOTER ── */
+.pf{
+  background:#0f2640;
+  padding:22px 24px calc(22px + env(safe-area-inset-bottom));
+  text-align:center;
+}
+.pf-links{display:flex;justify-content:center;gap:20px;flex-wrap:wrap;margin-bottom:10px}
+.pf-link{color:#7dd3f0;font-size:12px;font-weight:600;text-decoration:none;transition:color .15s}
+.pf-link:hover{color:#fff}
+.pf-secure{
+  display:flex;align-items:center;justify-content:center;gap:5px;
+  color:rgba(255,255,255,.35);font-size:11px;margin-bottom:6px;
+}
+.pf-secure-dot{width:5px;height:5px;background:#22c55e;border-radius:50%;flex-shrink:0}
+.pf-copy{color:rgba(255,255,255,.25);font-size:11px}
+
+/* ── MOBILE ── */
+/* Stripe trust strip */
+.stripe-trust{
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  margin-top:22px;padding-top:18px;
+  border-top:1px solid #f1f5f9;
+  flex-wrap:wrap;
+}
+.stripe-trust-item{
+  display:flex;align-items:center;gap:5px;
+  font-size:11px;color:#94a3b8;font-weight:600;
+}
+.stripe-trust-item svg{flex-shrink:0}
+.stripe-badge{
+  display:flex;align-items:center;gap:5px;
+  background:#f8fafc;border:1px solid #e2e8f0;
+  border-radius:8px;padding:5px 10px;
+  font-size:11px;color:#475569;font-weight:700;
+}
+.stripe-badge svg{flex-shrink:0}
+
+@media(max-width:480px){
+  .pm{padding:20px 12px 60px}
+  .pc-hero{padding:36px 24px 32px;border-radius:14px 14px 0 0}
+  .pc-hero-logo-wrap{width:68px;height:68px;border-radius:14px}
+  .pc-hero-logo{width:58px;height:58px}
+  .pc-hero-name{font-size:20px}
+  .pc-body{padding:24px 20px 28px;border-radius:0 0 14px 14px}
+  .search-wrap{flex-direction:column}
+  .btn-search{width:100%;padding:14px;text-align:center}
+  .qa-grid{grid-template-columns:1fr 1fr;gap:8px}
+  .qa-btn{padding:14px 12px}
+  .help-strip{flex-direction:column;align-items:flex-start;gap:8px}
+}
+
+@media(max-width:340px){
+  .qa-grid{grid-template-columns:1fr}
+}
+
+/* ── PRINT ── */
+@media print{
+  .ph,.pf,.qa-grid,.divider,.help-strip{display:none!important}
+  body{background:#fff}
+}
+</style>
+</head>
+<body>
+
+<!-- ── HEADER ── -->
+<header class="ph">
+  <div class="ph-left">
+    <img src="/images/logo.jpg" class="ph-logo" alt="EPS"
+      onerror="this.style.display='none'">
+    <div class="ph-brand">
+      <span class="ph-brand-main">Escobar Property Services</span>
+      <span class="ph-brand-sub">Client Portal</span>
+    </div>
+  </div>
+  <div class="ph-secure">
+    <div class="ph-secure-dot"></div>
+    Secure
+  </div>
+</header>
+
+<!-- ── MAIN ── -->
+<main class="pm">
+  <div class="pc">
+
+    <!-- Hero -->
+    <div class="pc-hero">
+      <div class="pc-hero-logo-wrap">
+        <img src="/images/logo.jpg" class="pc-hero-logo" alt="Escobar Property Services"
+          onerror="this.parentElement.innerHTML='<span style=\'font-size:28px;font-weight:900;color:#0f2640\'>EPS</span>'">
+      </div>
+      <div class="pc-hero-name">Escobar Property Services</div>
+      <div class="pc-hero-sub">Property Maintenance &amp; Cleaning — Atlanta, GA</div>
+      <div class="pc-hero-badge">
+        <span class="pc-hero-badge-dot"></span>
+        Secure Client Portal
+      </div>
+    </div>
+
+    <!-- Body -->
+    <div class="pc-body">
+
+      <!-- Search -->
+      <div class="sec-label">Find Your Document</div>
+      <div class="sec-hint">Enter your invoice or estimate number — found in your email or receipt.</div>
+
+      <div class="search-wrap">
+        <input
+          type="text"
+          class="search-input"
+          id="docSearch"
+          placeholder="e.g. INV-042 or EST-018"
+          autocomplete="off"
+          autocorrect="off"
+          autocapitalize="characters"
+          spellcheck="false"
+          inputmode="text"
+          onkeydown="if(event.key==='Enter'){event.preventDefault();searchDoc()}"
+        >
+        <button class="btn-search" id="searchBtn" onclick="searchDoc()">Search</button>
+      </div>
+      <div class="search-msg" id="searchMsg"></div>
+
+      <!-- Divider -->
+      <div class="divider">
+        <div class="divider-line"></div>
+        <div class="divider-text">Quick Access</div>
+        <div class="divider-line"></div>
+      </div>
+
+      <!-- Quick actions -->
+      <div class="qa-grid">
+        <button class="qa-btn" onclick="focusSearch('INV-')">
+          <span class="qa-icon">🧾</span>
+          <span class="qa-title">View Invoice</span>
+          <span class="qa-sub">Check status &amp; balance due</span>
+        </button>
+        <button class="qa-btn" onclick="focusSearch('EST-')">
+          <span class="qa-icon">📋</span>
+          <span class="qa-title">View Estimate</span>
+          <span class="qa-sub">Review your service quote</span>
+        </button>
+        <button class="qa-btn" onclick="focusSearch('INV-')">
+          <span class="qa-icon">💳</span>
+          <span class="qa-title">Pay Invoice</span>
+          <span class="qa-sub">Card or bank transfer</span>
+        </button>
+        <button class="qa-btn" onclick="focusSearch('EST-')">
+          <span class="qa-icon">✅</span>
+          <span class="qa-title">Approve Estimate</span>
+          <span class="qa-sub">Digital signature &amp; confirm</span>
+        </button>
+      </div>
+
+      <!-- Help -->
+      <div class="help-strip">
+        <div class="help-icon">💬</div>
+        <div class="help-body">
+          <div class="help-title">Need help finding your document?</div>
+          <div class="help-sub">Check your email for a link or call us and we'll look it up for you.</div>
+          <div class="help-links">
+            <a href="tel:6784882716" class="help-link">📞 678-488-2716</a>
+            <a href="mailto:info@escobarps.com" class="help-link">✉ info@escobarps.com</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Trust strip -->
+      <div class="stripe-trust">
+        <div class="stripe-trust-item">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          Secure connection
+        </div>
+        <div class="stripe-badge">
+          <svg width="14" height="14" viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="6" fill="#635BFF"/><path d="M13.9 11.3c0-.7.6-1 1.5-1 1.4 0 3 .4 4.3 1.1V7.9C18.4 7.3 17 7 15.4 7c-3.5 0-5.9 1.8-5.9 4.9 0 4.7 6.5 4 6.5 6 0 .8-.7 1.1-1.7 1.1-1.5 0-3.3-.6-4.8-1.5v3.5c1.6.7 3.3 1 4.8 1 3.6 0 6.1-1.8 6.1-5C20.4 12.3 13.9 13.2 13.9 11.3z" fill="#fff"/></svg>
+          Payments secured by Stripe
+        </div>
+      </div>
+
+    </div><!-- /pc-body -->
+  </div><!-- /pc -->
+</main>
+
+<!-- ── FOOTER ── -->
+<footer class="pf">
+  <div class="pf-links">
+    <a href="tel:6784882716" class="pf-link">📞 678-488-2716</a>
+    <a href="mailto:info@escobarps.com" class="pf-link">✉ info@escobarps.com</a>
+    <a href="https://escobarpropertyservices.com" class="pf-link" target="_blank" rel="noopener">🌐 Website</a>
+  </div>
+  <div class="pf-secure">
+    <span class="pf-secure-dot"></span>
+    Documents are encrypted and securely transmitted
+  </div>
+  <div class="pf-copy">© 2025 Escobar Property Services, LLC · Atlanta, GA</div>
+</footer>
+
+<script>
+var _SB_URL = 'https://lhptdukkqupxmtziinns.supabase.co';
+var _SB_KEY = 'sb_publishable_4e8u8RxmoE9SILILkFdHQA_neHqGxvO';
+
+function focusSearch(prefix) {
+  var inp = document.getElementById('docSearch');
+  inp.focus();
+  if (!inp.value || inp.value === 'INV-' || inp.value === 'EST-') inp.value = prefix;
+  inp.setSelectionRange(inp.value.length, inp.value.length);
+}
+
+function showMsg(type, html) {
+  var el = document.getElementById('searchMsg');
+  el.className = 'search-msg ' + type;
+  el.innerHTML = type === 'loading'
+    ? '<div class="spinner"></div>' + html
+    : html;
+}
+
+function hideMsg() {
+  var el = document.getElementById('searchMsg');
+  el.className = 'search-msg';
+  el.innerHTML = '';
+}
+
+async function searchDoc() {
+  var raw = (document.getElementById('docSearch').value || '').trim().replace(/\s+/g, '').toUpperCase();
+  if (!raw) {
+    showMsg('error', 'Please enter an invoice or estimate number.');
+    document.getElementById('docSearch').focus();
+    return;
+  }
+
+  var btn = document.getElementById('searchBtn');
+  btn.disabled = true;
+  showMsg('loading', 'Searching for your document&hellip;');
+
+  try {
+    var fnUrl = _SB_URL + '/functions/v1/get-document';
+    var fnHeaders = { 'Content-Type': 'application/json', 'apikey': _SB_KEY };
+    var [invRes, estRes] = await Promise.all([
+      fetch(fnUrl, { method: 'POST', headers: fnHeaders, body: JSON.stringify({ type: 'invoice',  number: raw }) }),
+      fetch(fnUrl, { method: 'POST', headers: fnHeaders, body: JSON.stringify({ type: 'estimate', number: raw }) })
+    ]);
+
+    var invData = invRes.ok  ? await invRes.json()  : null;
+    var estData = estRes.ok  ? await estRes.json()  : null;
+
+    if (invData && invData.invoice_number && !invData.error) {
+      showMsg('success', '&#10003; Invoice found! Opening your document&hellip;');
+      setTimeout(function() {
+        window.location.href = '/i/' + encodeURIComponent(invData.invoice_number);
+      }, 500);
+      return;
+    }
+
+    if (estData && estData.estimate_number && !estData.error) {
+      showMsg('success', '&#10003; Estimate found! Opening your document&hellip;');
+      setTimeout(function() {
+        window.location.href = '/e/' + encodeURIComponent(estData.estimate_number);
+      }, 500);
+      return;
+    }
+
+    showMsg('error',
+      'We couldn\'t find that document. Please double-check the number or '
+      + '<a href="tel:6784882716" style="color:#b91c1c;font-weight:800;white-space:nowrap">call us at 678-488-2716</a>.'
+    );
+  } catch(err) {
+    showMsg('error',
+      'Something went wrong. Please try again or '
+      + '<a href="tel:6784882716" style="color:#b91c1c;font-weight:800;white-space:nowrap">call 678-488-2716</a>.'
+    );
+  } finally {
+    btn.disabled = false;
+  }
+}
+
+/* Pre-fill from URL params: /portal?q=INV-042 or /portal?doc=EST-018 */
+(function() {
+  try {
+    var params = new URLSearchParams(window.location.search);
+    var q = params.get('q') || params.get('doc') || params.get('n');
+    if (q) {
+      var inp = document.getElementById('docSearch');
+      inp.value = q.trim().toUpperCase();
+      setTimeout(searchDoc, 350);
+    }
+  } catch(e) {}
+})();
+
+/* Remove any admin service worker that may have been installed */
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.getRegistrations().then(function(regs) {
+    regs.forEach(function(r) { r.unregister(); });
+  });
+}
+</script>
+</body>
+</html>
